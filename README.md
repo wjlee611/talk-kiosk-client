@@ -1,46 +1,46 @@
-# Getting Started with Create React App
+# Talk-kiosk-client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 개요
+말하는 사이에 주문 완료! 프로젝트의 클라이언트 리파지토리 입니다!
 
-## Available Scripts
+## 데이터 양식
+> ### 메뉴 아이디 값
+> 101\~199: 메인 메뉴(햄버거)\
+> 201\~299: 사이드 (감튀)\
+> 301\~399: 음료수 (콜라)
+> 
+> ### 데이터 양식 설명
+> `order`: 주문번호 (type: number)\
+> `takeout`: 매장/포장 (type: boolean)\
+> `menu`: 메뉴 (type: Array)
+>> `id`: 메뉴의 아이디 값 (type: number)\
+>> `set`: 메뉴의 세트 정보 (type: Array[메뉴의 아이디 값(number)])\
+>> `option`: 메인 메뉴의 요구사항 (type: Array[옵션의 아이디 값(number)])
+>
+> `price`: 가격 총합 (type: number)
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```json
+{
+  "order": number,
+  "takeout": boolean,
+  "menu": [
+    {
+      "id": 101,
+      "set": [201, 301],
+      "option": [],
+    },
+    {
+      "id": 101,
+      "set": [],
+      "option": [1001, 1004],
+    },
+    {
+      "id": 201,
+    },
+    {
+      "id": 301,
+    },
+  ],
+  "price": number,
+}
+```
