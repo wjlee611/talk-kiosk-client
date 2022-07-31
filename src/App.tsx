@@ -56,6 +56,7 @@ table {
 }
 body {
   font-family: 'Source Sans Pro', sans-serif;
+  overflow: hidden;
 }
 a {
   text-decoration: none;

@@ -13,6 +13,7 @@ export interface IOrdered {
     set?: number[];
     option?: number[];
   }[];
+  orderedIdx?: number;
 }
 
 interface IGetOrder {
@@ -20,7 +21,10 @@ interface IGetOrder {
   isSuccess: boolean;
   message: string;
   result: {
-    jsonInfo: { ordered: IOrdered }[];
+    jsonInfo: {
+      ordered: IOrdered;
+      orderedIdx: number;
+    }[];
   };
 }
 
@@ -80,19 +84,34 @@ export function postOrdered(data: IOrdered) {
   }
 }
 
-export async function GetOrdered(): Promise<IOrdered[]> {
+export async function GetOrdered(status?: string): Promise<IOrdered[]> {
   let result: IOrdered[] = [];
   try {
     const res = await axios.get<IGetOrder>(
-      "https://talking-kiosk.shop/app/ordered"
+      `https://talking-kiosk.shop/app/ordered?status=${status}`
     );
     const resResult = res.data.result.jsonInfo;
-    resResult.map((order) => {
+    resResult.map((order, idx) => {
       result.push(order.ordered);
+      result[idx].orderedIdx = order.orderedIdx;
+      return null;
     });
   } catch (err) {
     console.log(err);
   } finally {
     return result;
+  }
+}
+
+export async function setOrderStatus(idx: number | undefined, status: string) {
+  try {
+    if (idx === undefined)
+      throw new Error("setOrderStatus function required idx parameter.");
+    console.log(idx, status);
+    await axios.patch(
+      `https://talking-kiosk.shop/app/ordered/${idx}?status=${status}`
+    );
+  } catch (err) {
+    console.log(err);
   }
 }

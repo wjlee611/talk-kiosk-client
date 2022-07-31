@@ -54,6 +54,7 @@ function KioskHome() {
           {list.map((order, idx) => (
             <li key={idx} style={{ marginBottom: "10px" }}>
               <div>
+                <span>{order.orderedIdx}, </span>
                 <span>{order.order}, </span>
                 <span>{order.takeout ? "takeout" : "eat in store"}, </span>
                 <span>{order.price}</span>
