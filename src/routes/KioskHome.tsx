@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { GetOrdered, IOrdered, postOrdered } from "../api";
+import Stt from "../components/Stt";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -46,43 +47,7 @@ function KioskHome() {
         />
         <Button>Submit</Button>
       </form>
-      <Title>주문내역</Title>
-      {loading ? (
-        <Button onClick={getOrderList}>Get from server</Button>
-      ) : (
-        <ul>
-          {list.map((order, idx) => (
-            <li key={idx} style={{ marginBottom: "10px" }}>
-              <div>
-                <span>{order.orderedIdx}, </span>
-                <span>{order.order}, </span>
-                <span>{order.takeout ? "takeout" : "eat in store"}, </span>
-                <span>{order.price}</span>
-                <div>
-                  {order.menu.map((item, idx2) => (
-                    <div key={idx2}>
-                      <span>{item.id} - </span>
-                      <span>
-                        option:{" "}
-                        {item?.option?.map((i, idx3) => (
-                          <span key={idx3}>{i}, </span>
-                        ))}{" "}
-                        /{" "}
-                      </span>
-                      <span>
-                        set:{" "}
-                        {item?.set?.map((i, idx3) => (
-                          <span key={idx3}>{i}, </span>
-                        ))}{" "}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      <Stt />
     </Wrapper>
   );
 }
