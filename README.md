@@ -11,6 +11,10 @@
 서버 리파지토리\
 <a href="https://github.com/Fantastic5-Team/talk-kiosk-server" target="_blank">
   <img src="https://img.shields.io/badge/GitHub-talk--kiosk--server-brightgreen?style=for-the-badge&logo=github" />
+</a>\
+플라스크 서버 리파지토리\
+<a href="https://github.com/Fantastic5-Team/talk-kiosk-flask_server" target="_blank">
+  <img src="https://img.shields.io/badge/GitHub-talk--kiosk--flask_server-brightgreen?style=for-the-badge&logo=github" />
 </a>
 
 
