@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ConsoleHome from "./routes/ConsoleHome";
 import KioskHome from "./routes/KioskHome";
+import Processing from "./routes/Processing";
 
 function Router() {
   return (
@@ -11,6 +12,9 @@ function Router() {
         </Route>
         <Route path="/console">
           <ConsoleHome />
+        </Route>
+        <Route path="/processing">
+          <Processing />
         </Route>
       </Switch>
     </BrowserRouter>
