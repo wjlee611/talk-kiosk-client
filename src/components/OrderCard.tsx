@@ -3,6 +3,8 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { IOrdered, setOrderStatus } from "../api";
 import { screenUpdate } from "../atoms";
+import menuData from "../menu-table.json";
+import { idToName } from "../utils";
 
 const Wrapper = styled.div`
   width: 400px;
@@ -134,14 +136,14 @@ function OrderCard({ data, status }: IOrderCard) {
       <OrderList>
         {data.menu.map((menu, idx) => (
           <MenuWrapper key={idx} idx={idx}>
-            <span>{menu.id}</span>
+            <span>{idToName(menuData, menu.id)}</span>
             {menu.id < 200 ? (
               <>
                 {menu.option?.length ? (
                   <MenuChildWrapper>
                     <span>Option</span>
                     {menu.option.map((option, idx2) => (
-                      <span key={idx2}>{option}</span>
+                      <span key={idx2}>{idToName(menuData, option)}</span>
                     ))}
                   </MenuChildWrapper>
                 ) : null}
@@ -149,7 +151,7 @@ function OrderCard({ data, status }: IOrderCard) {
                   <MenuChildWrapper>
                     <span>Set Menu</span>
                     {menu.set.map((set, idx2) => (
-                      <span key={idx2}>{set}</span>
+                      <span key={idx2}>{idToName(menuData, set)}</span>
                     ))}
                   </MenuChildWrapper>
                 ) : null}
