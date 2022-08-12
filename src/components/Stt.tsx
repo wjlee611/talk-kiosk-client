@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -25,11 +25,11 @@ const MicBtn = styled.button`
   justify-content: center;
   align-items: center;
 `;
-const Mic = styled.img<{ on: boolean }>`
+const Mic = styled.img<{ on: "true" | "false" }>`
   width: 50%;
   height: 50%;
   filter: ${(props) =>
-    props.on
+    props.on === "true"
       ? "invert(82%) sepia(80%) saturate(5668%) hue-rotate(310deg) brightness(100%) contrast(103%)"
       : "opacity(80%)"};
 `;
@@ -106,7 +106,7 @@ function Stt() {
       </HintBox>
       <HintIcon src={caretDown} />
       <MicBtn onClick={onClick}>
-        <Mic src={microphone} on={listening} />
+        <Mic src={microphone} on={listening ? "true" : "false"} />
       </MicBtn>
     </Wrapper>
   );
