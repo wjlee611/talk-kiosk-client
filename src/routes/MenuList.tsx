@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Sticky, StickyContainer } from "react-sticky";
+import Sticky from "react-sticky-el";
 import MenuCard from "../components/MenuCard";
 import menuData from "../menu-table.json";
 import { idToName } from "../utils";
@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: scroll;
 `;
 const Category = styled.div`
   width: 100%;
@@ -20,7 +20,6 @@ const Category = styled.div`
   display: flex;
   align-items: center;
   padding-left: 30px;
-  overflow: auto;
 `;
 const GridWrapper = styled.div`
   width: 100%;
@@ -34,23 +33,13 @@ const GridWrapper = styled.div`
 
 function MenuList() {
   return (
-    <Wrapper>
-      <span>aaaaaaaaa</span>
-      <span>aaaaaaaaa</span>
-      <span>aaaaaaaaa</span>
-      <span>aaaaaaaaa</span>
+    <Wrapper className="scroll-area">
       {[1, 2, 3].map((i) => (
-        <StickyContainer key={i}>
-          <Sticky>
-            {({ style }) => (
-              <Category style={{ ...style }}>
-                {i === 1
-                  ? "Main Menus"
-                  : i === 2
-                  ? "Side Menus"
-                  : "Drink Menus"}
-              </Category>
-            )}
+        <div key={i} className="block">
+          <Sticky boundaryElement=".block" scrollElement=".scroll-area">
+            <Category>
+              {i === 1 ? "Main Menus" : i === 2 ? "Side Menus" : "Drink Menus"}
+            </Category>
           </Sticky>
           <GridWrapper>
             {Object.keys(menuData).map((id, idx) => {
@@ -66,7 +55,7 @@ function MenuList() {
               return null;
             })}
           </GridWrapper>
-        </StickyContainer>
+        </div>
       ))}
     </Wrapper>
   );
