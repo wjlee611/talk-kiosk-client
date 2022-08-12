@@ -30,6 +30,7 @@
 ```json
 "dependencies": {
   "axios": "^0.27.2",
+  "query-string": "^7.1.1",
   "react-hook-form": "^7.33.1",
   "react-query": "^3.39.1",
   "react-router-dom": "^5.3.0",
