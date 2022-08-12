@@ -17,7 +17,6 @@ const Wrapper = styled.div`
 const ComponentWrapper = styled.div`
   width: 300%;
   height: 100%;
-  background-color: #00000033;
 `;
 
 function Processing() {

@@ -14,18 +14,19 @@ const Wrapper = styled.div`
 const Category = styled.div`
   width: 100%;
   height: 100px;
-  min-height: 100px;
   background-color: #fec260;
-  border-bottom: 1px solid white;
+  border-bottom: 2px solid white;
   display: flex;
   align-items: center;
   padding-left: 30px;
+  font-size: 36px;
+  font-weight: 700;
 `;
 const GridWrapper = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 300px);
-  grid-auto-rows: minmax(300px, auto);
+  grid-auto-rows: minmax(300px, 300px);
   gap: 50px;
   padding: 50px;
   justify-content: center;
@@ -38,7 +39,7 @@ function MenuList() {
         <div key={i} className="block">
           <Sticky boundaryElement=".block" scrollElement=".scroll-area">
             <Category>
-              {i === 1 ? "Main Menus" : i === 2 ? "Side Menus" : "Drink Menus"}
+              {i === 1 ? "메인 메뉴" : i === 2 ? "사이드 메뉴" : "음료수"}
             </Category>
           </Sticky>
           <GridWrapper>
@@ -48,6 +49,7 @@ function MenuList() {
                   <MenuCard
                     key={idx}
                     index={idx + 1}
+                    id={Number(id)}
                     name={idToName(menuData, Number(id))}
                   />
                 );
