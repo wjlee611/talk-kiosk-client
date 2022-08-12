@@ -30,11 +30,11 @@
 ```json
 "dependencies": {
   "axios": "^0.27.2",
-  "react-dom": "^18.2.0",
   "react-hook-form": "^7.33.1",
   "react-query": "^3.39.1",
   "react-router-dom": "^5.3.0",
-  "react-scripts": "5.0.1",
+  "react-speech-recognition": "^3.9.1",
+  "react-sticky-el": "^2.0.9",
   "recoil": "^0.7.4",
   "styled-components": "^5.3.5",
 }
