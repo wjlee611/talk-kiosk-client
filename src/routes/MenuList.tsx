@@ -14,13 +14,15 @@ const Wrapper = styled.div`
 const Category = styled.div`
   width: 100%;
   height: 100px;
-  background-color: #fec260;
+  background: linear-gradient(90deg, #f65858, #e64848);
   border-bottom: 2px solid white;
   display: flex;
   align-items: center;
   padding-left: 30px;
+  color: white;
   font-size: 36px;
   font-weight: 700;
+  will-change: scroll-position;
 `;
 const GridWrapper = styled.div`
   width: 100%;
