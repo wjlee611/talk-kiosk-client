@@ -10,9 +10,26 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  clip-path: inset(0 0 0 0);
+  & > div,
+  & > div > div:first-child,
+  & > div > div:first-child > div {
+    z-index: 10;
+  }
+  & > div {
+    background-color: rgba(50, 0, 0, 0.1);
+    margin: 0 5%;
+    margin-bottom: 50px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+  }
+  & > div > div > div {
+    will-change: position, top, bottom, scroll-position;
+    top: 0;
+  }
 `;
 const Category = styled.div`
-  width: 90%;
+  width: calc(100% + 6px);
   height: 100px;
   background: linear-gradient(90deg, #f65858, #e64848);
   border: 3px solid white;
@@ -22,11 +39,10 @@ const Category = styled.div`
   display: flex;
   align-items: center;
   padding-left: 30px;
-  margin-left: 5%;
+  margin-left: -3px;
   color: white;
   font-size: 36px;
   font-weight: 700;
-  will-change: scroll-position;
 `;
 const GridWrapper = styled.div`
   width: 100%;
@@ -46,6 +62,7 @@ function MenuList() {
           <Sticky
             boundaryElement=".block"
             scrollElement=".scroll-area"
+            positionRecheckInterval={1}
             topOffset={-1}
           >
             <Category>
