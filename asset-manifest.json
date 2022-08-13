@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/talk-kiosk-client/static/js/main.2ff1fef9.js",
+    "main.js": "/talk-kiosk-client/static/js/main.798af801.js",
     "static/media/microphone.svg": "/talk-kiosk-client/static/media/microphone.589698692f9556d43fbbe0180808e644.svg",
     "index.html": "/talk-kiosk-client/index.html",
     "static/media/caret-down.svg": "/talk-kiosk-client/static/media/caret-down.6beb66b8c314204a7d2b691f5d4e2b35.svg",
-    "main.2ff1fef9.js.map": "/talk-kiosk-client/static/js/main.2ff1fef9.js.map"
+    "main.798af801.js.map": "/talk-kiosk-client/static/js/main.798af801.js.map"
   },
   "entrypoints": [
-    "static/js/main.2ff1fef9.js"
+    "static/js/main.798af801.js"
   ]
 }
