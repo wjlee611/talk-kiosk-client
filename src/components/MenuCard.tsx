@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div<{ imgUrl: string }>`
+  width: 300px;
+  height: 300px;
   background-color: white;
   border-radius: 20px;
   display: flex;
@@ -41,7 +43,7 @@ function MenuCard({ name, index, id }: IMenuCard) {
   const imgUrl = process.env.PUBLIC_URL + `/images/menus/${id}.png`;
   return (
     <Wrapper imgUrl={imgUrl}>
-      <Index>{index}</Index>
+      <Index>{index === 0 ? "+" : index}</Index>
       <Name>{name}</Name>
     </Wrapper>
   );
