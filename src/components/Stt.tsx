@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 100px;
   padding: 0 30px;
 `;
 const MicBtn = styled.button`

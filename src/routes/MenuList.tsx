@@ -12,13 +12,17 @@ const Wrapper = styled.div`
   overflow-y: scroll;
 `;
 const Category = styled.div`
-  width: 100%;
+  width: 90%;
   height: 100px;
   background: linear-gradient(90deg, #f65858, #e64848);
-  border-bottom: 2px solid white;
+  border: 3px solid white;
+  border-top: none;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
   display: flex;
   align-items: center;
   padding-left: 30px;
+  margin-left: 5%;
   color: white;
   font-size: 36px;
   font-weight: 700;
@@ -39,7 +43,11 @@ function MenuList() {
     <Wrapper className="scroll-area">
       {[1, 2, 3].map((i) => (
         <div key={i} className="block">
-          <Sticky boundaryElement=".block" scrollElement=".scroll-area">
+          <Sticky
+            boundaryElement=".block"
+            scrollElement=".scroll-area"
+            topOffset={-1}
+          >
             <Category>
               {i === 1 ? "메인 메뉴" : i === 2 ? "사이드 메뉴" : "음료수"}
             </Category>
