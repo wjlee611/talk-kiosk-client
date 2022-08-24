@@ -136,8 +136,8 @@ function OrderCard({ data, status }: IOrderCard) {
       <OrderList>
         {data.menu.map((menu, idx) => (
           <MenuWrapper key={idx} idx={idx}>
-            <span>{idToName(menuData, menu.id)}</span>
-            {menu.id < 200 ? (
+            <span>{idToName(menuData, menu.id[0])}</span>
+            {menu.id[0] < 200 ? (
               <>
                 {menu.option?.length ? (
                   <MenuChildWrapper>

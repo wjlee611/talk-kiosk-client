@@ -4,14 +4,16 @@ const header = {
   "Content-Type": `application/json`,
 };
 
+// 여기부터 js서버 api
 export interface IOrdered {
   order: number;
   price: number;
   takeout: boolean;
   menu: {
-    id: number;
-    set?: number[];
-    option?: number[];
+    id: number[];
+    set: number[];
+    option: number[];
+    qty: number;
   }[];
   orderedIdx?: number;
 }
@@ -113,5 +115,89 @@ export async function setOrderStatus(idx: number | undefined, status: string) {
     );
   } catch (err) {
     console.log(err);
+  }
+}
+
+//여기부터 flask서버 api
+export interface IPostOrderList {
+  order_list: {
+    menu: number[];
+    option: number[];
+    set: number[];
+    qty: number;
+  }[];
+  code: number;
+}
+
+export interface IPostOption {
+  option: number[];
+  code: number;
+}
+
+export interface IPostSet {
+  set: number[];
+  code: number;
+}
+
+export async function postOrderList(text: string): Promise<IPostOrderList> {
+  let result: IPostOrderList = { order_list: [], code: 0 };
+  try {
+    const postJson: any = { text: text };
+
+    const data = await axios.post<IPostOrderList>(
+      "http://localhost:3000/order",
+      JSON.stringify(postJson),
+      {
+        headers: header,
+      }
+    );
+    result.order_list = data.data.order_list;
+    result.code = data.data.code;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return result;
+  }
+}
+
+export async function postOption(text: string): Promise<IPostOption> {
+  let result: IPostOption = { option: [], code: 0 };
+  try {
+    const postJson: any = { text: text };
+
+    const data = await axios.post<IPostOption>(
+      "http://127.0.0.1:5000/option",
+      JSON.stringify(postJson),
+      {
+        headers: header,
+      }
+    );
+    result.option = data.data.option;
+    result.code = data.data.code;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return result;
+  }
+}
+
+export async function postSet(text: string, set: number[]): Promise<IPostSet> {
+  let result: IPostSet = { set: [], code: 0 };
+  try {
+    let postJson: any = { text: text, set: set };
+
+    const data = await axios.post<IPostSet>(
+      "http://localhost:3000/set",
+      JSON.stringify(postJson),
+      {
+        headers: header,
+      }
+    );
+    result.set = data.data.set;
+    result.code = data.data.code;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return result;
   }
 }
