@@ -58,6 +58,7 @@ function MenuOption() {
 
   //api 호출
   useEffect(() => {
+    setCode(2003); // for test
     if (code === 2003) {
       //code 2003: 옵션변경
       postOption(text).then((res) => {

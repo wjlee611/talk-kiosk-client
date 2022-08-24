@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { menuSet } from "../atoms";
+import { postSet } from "../api";
+import { menuSet, resultCode, stText } from "../atoms";
 import MenuCard from "../components/MenuCard";
 import menuData from "../menu-table.json";
 import { idToName } from "../utils";
@@ -17,10 +18,31 @@ const Wrapper = styled.div`
 
 function MenuSet() {
   const [option, setOption] = useRecoilState(menuSet);
-  // for test
+  const text = useRecoilValue(stText);
+  const [code, setCode] = useRecoilState(resultCode);
+
+  //api 호출
   useEffect(() => {
-    setOption([201, 0]);
-  }, []);
+    if (code === 2005) {
+      //code 2005: 세트변경
+      postSet(text, []).then((res) => {
+        setCode(res.code);
+        setOption(res.set);
+      });
+    }
+  }, [text]);
+
+  //code 확인
+  useEffect(() => {
+    if (code === 2006) {
+      //code 2006: 세트완료
+      //TODO: 다음으로 넘기기
+    }
+    if (code === 2007) {
+      //code 2007: 세트충돌
+      //TODO: 세트 충돌 알려주기 ex. 콜라, 사이다
+    }
+  }, [code]);
   return (
     <Wrapper>
       <MenuCard

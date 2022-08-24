@@ -10,9 +10,10 @@ export interface IOrdered {
   price: number;
   takeout: boolean;
   menu: {
-    id: number;
-    set?: number[];
-    option?: number[];
+    id: number[];
+    set: number[];
+    option: number[];
+    qty: number;
   }[];
   orderedIdx?: number;
 }
@@ -118,16 +119,55 @@ export async function setOrderStatus(idx: number | undefined, status: string) {
 }
 
 //여기부터 flask서버 api
+export interface IPostOrderList {
+  order_list: {
+    menu: number[];
+    option: number[];
+    set: number[];
+    qty: number;
+  }[];
+  code: number;
+}
+
 export interface IPostOption {
   option: number[];
   code: number;
 }
 
+export interface IPostSet {
+  set: number[];
+  code: number;
+}
+
+export async function postOrderList(text: string): Promise<IPostOrderList> {
+  let result: IPostOrderList = { order_list: [], code: 0 };
+  try {
+    const postJson: any = { text: text };
+
+    axios
+      .post<IPostOrderList>(
+        "http://localhost:3000/order",
+        JSON.stringify(postJson),
+        {
+          headers: header,
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        result.order_list = res.data.order_list;
+        result.code = res.data.code;
+      });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return result;
+  }
+}
+
 export async function postOption(text: string): Promise<IPostOption> {
   let result: IPostOption = { option: [], code: 0 };
   try {
-    const postJson: any = {};
-    postJson["text"] = text;
+    const postJson: any = { text: text };
 
     axios
       .post<IPostOption>(
@@ -140,6 +180,27 @@ export async function postOption(text: string): Promise<IPostOption> {
       .then((res) => {
         console.log(res);
         result.option = res.data.option;
+        result.code = res.data.code;
+      });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return result;
+  }
+}
+
+export async function postSet(text: string, set: number[]): Promise<IPostSet> {
+  let result: IPostSet = { set: [], code: 0 };
+  try {
+    let postJson: any = { text: text, set: set };
+
+    axios
+      .post<IPostSet>("http://localhost:3000/set", JSON.stringify(postJson), {
+        headers: header,
+      })
+      .then((res) => {
+        console.log(res);
+        result.set = res.data.set;
         result.code = res.data.code;
       });
   } catch (err) {
