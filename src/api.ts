@@ -4,6 +4,7 @@ const header = {
   "Content-Type": `application/json`,
 };
 
+// 여기부터 js서버 api
 export interface IOrdered {
   order: number;
   price: number;
@@ -113,5 +114,37 @@ export async function setOrderStatus(idx: number | undefined, status: string) {
     );
   } catch (err) {
     console.log(err);
+  }
+}
+
+//여기부터 flask서버 api
+export interface IPostOption {
+  option: number[];
+  code: number;
+}
+
+export async function postOption(text: string): Promise<IPostOption> {
+  let result: IPostOption = { option: [], code: 0 };
+  try {
+    const postJson: any = {};
+    postJson["text"] = text;
+
+    axios
+      .post<IPostOption>(
+        "http://localhost:3000/option",
+        JSON.stringify(postJson),
+        {
+          headers: header,
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        result.option = res.data.option;
+        result.code = res.data.code;
+      });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return result;
   }
 }

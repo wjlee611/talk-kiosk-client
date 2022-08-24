@@ -5,6 +5,8 @@ import SpeechRecognition, {
 import styled from "styled-components";
 import microphone from "../images/microphone.svg";
 import caretDown from "../images/caret-down.svg";
+import { useSetRecoilState } from "recoil";
+import { stText } from "../atoms";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -48,6 +50,8 @@ const HintIcon = styled.img`
 `;
 
 function Stt() {
+  const setSTText = useSetRecoilState(stText);
+
   const {
     transcript,
     interimTranscript,
@@ -55,27 +59,12 @@ function Stt() {
     resetTranscript,
     listening,
   } = useSpeechRecognition();
-  // {
-  // commands: [
-  //   {
-  //     command: "reset",
-  //     callback: () => resetTranscript(),
-  //   },
-  //   {
-  //     command: "shut up",
-  //     callback: () => messageSet("I wasn't talking."),
-  //   },
-  //   {
-  //     command: "Hello",
-  //     callback: () => messageSet("Hi there!"),
-  //   },
-  // ],
-  // }
 
   useEffect(() => {
     if (finalTranscript !== "") {
       SpeechRecognition.stopListening();
-      console.log("Got final result:", finalTranscript);
+      setSTText(finalTranscript);
+      // console.log("Got final result:", finalTranscript);
     }
   }, [interimTranscript, finalTranscript]);
 
@@ -96,6 +85,7 @@ function Stt() {
     resetTranscript();
     listenContinuously();
   };
+
   return (
     <Wrapper>
       <HintBox>

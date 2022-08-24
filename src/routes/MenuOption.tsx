@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { menuOption } from "../atoms";
+import { postOption } from "../api";
+import { menuOption, resultCode, stText } from "../atoms";
 import menuData from "../menu-table.json";
 import { idToName } from "../utils";
 
@@ -52,10 +53,31 @@ const SelectBox = styled.div<{ isSelected: boolean }>`
 
 function MenuOption() {
   const [option, setOption] = useRecoilState(menuOption);
-  // for test
+  const text = useRecoilValue(stText);
+  const [code, setCode] = useRecoilState(resultCode);
+
+  //api 호출
   useEffect(() => {
-    setOption([true, false, false, true]);
-  }, []);
+    if (code === 2003) {
+      //code 2003: 옵션변경
+      postOption(text).then((res) => {
+        setCode(res.code);
+        let tmpOption = [false, false, false, false];
+        res.option.map((i) => {
+          tmpOption[i - 2000 - 1] = i ? true : false;
+        });
+        setOption(tmpOption);
+      });
+    }
+  }, [text]);
+
+  //code 확인
+  useEffect(() => {
+    if (code === 2004) {
+      //code 2004: 옵션완료
+      //TODO: 다음으로 넘기기
+    }
+  }, [code]);
   return (
     <Wrapper>
       {[1, 2, 3, 4].map((i) => (
