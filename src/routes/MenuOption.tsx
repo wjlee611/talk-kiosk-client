@@ -62,9 +62,11 @@ function MenuOption() {
     if (code === 2003) {
       //code 2003: 옵션변경
       postOption(text).then((res) => {
+        console.log("res.code:", res.code, "\nres.option:", res.option);
         setCode(res.code);
-        let tmpOption = [false, false, false, false];
+        let tmpOption = [...option];
         res.option.map((i) => {
+          console.log("i:", i);
           tmpOption[i - 2000 - 1] = i ? true : false;
         });
         setOption(tmpOption);

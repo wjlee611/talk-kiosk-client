@@ -144,19 +144,15 @@ export async function postOrderList(text: string): Promise<IPostOrderList> {
   try {
     const postJson: any = { text: text };
 
-    axios
-      .post<IPostOrderList>(
-        "http://localhost:3000/order",
-        JSON.stringify(postJson),
-        {
-          headers: header,
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        result.order_list = res.data.order_list;
-        result.code = res.data.code;
-      });
+    const data = await axios.post<IPostOrderList>(
+      "http://localhost:3000/order",
+      JSON.stringify(postJson),
+      {
+        headers: header,
+      }
+    );
+    result.order_list = data.data.order_list;
+    result.code = data.data.code;
   } catch (err) {
     console.log(err);
   } finally {
@@ -169,19 +165,15 @@ export async function postOption(text: string): Promise<IPostOption> {
   try {
     const postJson: any = { text: text };
 
-    axios
-      .post<IPostOption>(
-        "http://localhost:3000/option",
-        JSON.stringify(postJson),
-        {
-          headers: header,
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        result.option = res.data.option;
-        result.code = res.data.code;
-      });
+    const data = await axios.post<IPostOption>(
+      "http://127.0.0.1:5000/option",
+      JSON.stringify(postJson),
+      {
+        headers: header,
+      }
+    );
+    result.option = data.data.option;
+    result.code = data.data.code;
   } catch (err) {
     console.log(err);
   } finally {
@@ -194,15 +186,15 @@ export async function postSet(text: string, set: number[]): Promise<IPostSet> {
   try {
     let postJson: any = { text: text, set: set };
 
-    axios
-      .post<IPostSet>("http://localhost:3000/set", JSON.stringify(postJson), {
+    const data = await axios.post<IPostSet>(
+      "http://localhost:3000/set",
+      JSON.stringify(postJson),
+      {
         headers: header,
-      })
-      .then((res) => {
-        console.log(res);
-        result.set = res.data.set;
-        result.code = res.data.code;
-      });
+      }
+    );
+    result.set = data.data.set;
+    result.code = data.data.code;
   } catch (err) {
     console.log(err);
   } finally {
