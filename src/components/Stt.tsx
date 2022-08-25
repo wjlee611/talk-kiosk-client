@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -86,6 +86,12 @@ function Stt() {
     listenContinuously();
   };
 
+  //for not mic usage
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+    setSTText(e.target[0].value);
+  }
+
   return (
     <Wrapper>
       <HintBox>
@@ -99,6 +105,9 @@ function Stt() {
       <MicBtn onClick={onClick}>
         <Mic src={microphone} on={listening ? "true" : "false"} />
       </MicBtn>
+      <form onSubmit={onSubmit}>
+        <input type="text" ></input>
+      </form>
     </Wrapper>
   );
 }

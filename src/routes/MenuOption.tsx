@@ -66,8 +66,7 @@ function MenuOption() {
         setCode(res.code);
         let tmpOption = [...option];
         res.option.map((i) => {
-          console.log("i:", i);
-          tmpOption[i - 2000 - 1] = i ? true : false;
+          tmpOption[i - 2000 - 1] = !tmpOption[i - 2000 - 1];
         });
         setOption(tmpOption);
       });
@@ -89,10 +88,10 @@ function MenuOption() {
           {option[i - 1] ? (
             <SelectBox isSelected={option[i - 1]}>
               <span>선택 됨</span>
-              <span>+ {i === 4 ? "0" : i === 3 ? "300" : "500"}원</span>
+              <span>+ {i === 4 ? "500" : "0"}원</span>
             </SelectBox>
           ) : (
-            <span>+ {i === 4 ? "0" : i === 3 ? "300" : "500"}원</span>
+            <span>+ {i === 4 ? "500" : "0"}원</span>
           )}
         </Card>
       ))}
