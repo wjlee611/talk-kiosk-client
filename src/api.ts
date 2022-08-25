@@ -187,7 +187,7 @@ export async function postSet(text: string, set: number[]): Promise<IPostSet> {
     let postJson: any = { text: text, set: set };
 
     const data = await axios.post<IPostSet>(
-      "http://localhost:3000/set",
+      "http://127.0.0.1:5000/set",
       JSON.stringify(postJson),
       {
         headers: header,

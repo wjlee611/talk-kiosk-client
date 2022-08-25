@@ -28,7 +28,7 @@ export const resultCode = atom<number | undefined>({
 
 export const menuSet = atom<number[]>({
   key: "set",
-  default: [],
+  default: [201, 301],
 });
 
 export const menuOption = atom<boolean[]>({

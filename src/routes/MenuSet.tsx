@@ -23,9 +23,10 @@ function MenuSet() {
 
   //api 호출
   useEffect(() => {
+    setCode(2005); // for test
     if (code === 2005) {
       //code 2005: 세트변경
-      postSet(text, []).then((res) => {
+      postSet(text, [...option]).then((res) => {
         setCode(res.code);
         setOption(res.set);
       });
