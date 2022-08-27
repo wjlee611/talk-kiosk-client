@@ -34,16 +34,20 @@ function MenuSet() {
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
+  const [isFirst, setIsFirst] = useState(true);
 
   //api 호출
   useEffect(() => {
-    if (code === 2005 || code === 1002 || code === 2007) {
-      //code 2005: 세트변경
-      postSet(text, [...option]).then((res) => {
-        setCode(res.code);
-        setOption(res.set);
-      });
+    if (!isFirst) {
+      if (code === 2005 || code === 1002 || code === 2007) {
+        //code 2005: 세트변경
+        postSet(text, [...option]).then((res) => {
+          setCode(res.code);
+          setOption(res.set);
+        });
+      }
     }
+    setIsFirst(false);
   }, [text]);
 
   //code 확인

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -22,12 +22,11 @@ function KioskHome() {
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
+  const [isFirst, setIsFirst] = useState(true);
 
   //api 호출
   useEffect(() => {
-    setCode(0); // for test
-    if (code === 0) {
-      //code 0: 주문대기(only local)
+    if (!isFirst) {
       postOrderList(text).then((res) => {
         setCode(res.code);
         let tmpOrderedMenu: IOrdered["menu"] = [];
@@ -47,7 +46,8 @@ function KioskHome() {
         }));
       });
     }
-  }, [text]);
+    setIsFirst(false);
+  }, [text, isFirst]);
 
   //code 확인
   useEffect(() => {

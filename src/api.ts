@@ -150,7 +150,7 @@ export async function postOrderList(text: string): Promise<IPostOrderList> {
     const postJson: any = { text: text };
 
     const data = await axios.post<IPostOrderList>(
-      "http://127.0.0.1:5000/order",
+      "http://127.0.0.1:8000/order",
       JSON.stringify(postJson),
       {
         headers: header,
@@ -174,7 +174,7 @@ export async function postConflictSolve(
     const postJson: any = { text: text, menu_id: menuId };
 
     const data = await axios.post<IPostConflictSolve>(
-      "http://127.0.0.1:5000/order/conflict",
+      "http://127.0.0.1:8000/order/conflict",
       JSON.stringify(postJson),
       {
         headers: header,
@@ -195,7 +195,7 @@ export async function postOption(text: string): Promise<IPostOption> {
     const postJson: any = { text: text };
 
     const data = await axios.post<IPostOption>(
-      "http://127.0.0.1:5000/option",
+      "http://127.0.0.1:8000/option",
       JSON.stringify(postJson),
       {
         headers: header,
@@ -216,7 +216,7 @@ export async function postSet(text: string, set: number[]): Promise<IPostSet> {
     let postJson: any = { text: text, set: set };
 
     const data = await axios.post<IPostSet>(
-      "http://127.0.0.1:5000/set",
+      "http://127.0.0.1:8000/set",
       JSON.stringify(postJson),
       {
         headers: header,
