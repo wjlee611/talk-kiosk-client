@@ -90,7 +90,7 @@ function Stt() {
   const onSubmit = (e: any) => {
     e.preventDefault();
     setSTText(e.target[0].value);
-  }
+  };
 
   return (
     <Wrapper>
@@ -106,7 +106,7 @@ function Stt() {
         <Mic src={microphone} on={listening ? "true" : "false"} />
       </MicBtn>
       <form onSubmit={onSubmit}>
-        <input type="text" ></input>
+        <input type="text" style={{ width: "300px" }}></input>
       </form>
     </Wrapper>
   );

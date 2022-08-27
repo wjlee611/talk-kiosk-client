@@ -1,11 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { postSet } from "../api";
-import { menuSet, resultCode, stText } from "../atoms";
+import {
+  menuSet,
+  orderedMenu,
+  processing,
+  procIdx,
+  resultCode,
+  stText,
+} from "../atoms";
 import MenuCard from "../components/MenuCard";
 import menuData from "../menu-table.json";
-import { idToName } from "../utils";
+import { idToName, makeMenu } from "../utils";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -17,14 +25,19 @@ const Wrapper = styled.div`
 `;
 
 function MenuSet() {
-  const [option, setOption] = useRecoilState(menuSet);
-  const text = useRecoilValue(stText);
+  const [ordered, setOrdered] = useRecoilState(orderedMenu);
+  const [processIdx, setProcessIdx] = useRecoilState(procIdx);
+  const [isProcessing, setIsProcessing] = useRecoilState(processing);
+  const [option, setOption] = useState<number[]>(
+    processIdx < ordered.menu.length ? ordered.menu[processIdx].set : []
+  );
+  const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const history = useHistory();
 
   //api 호출
   useEffect(() => {
-    setCode(2005); // for test
-    if (code === 2005) {
+    if (code === 2005 || code === 1002 || code === 2007) {
       //code 2005: 세트변경
       postSet(text, [...option]).then((res) => {
         setCode(res.code);
@@ -38,12 +51,25 @@ function MenuSet() {
     if (code === 2006) {
       //code 2006: 세트완료
       //TODO: 다음으로 넘기기
+      const newMenu = makeMenu(ordered.menu, processIdx, "SET", option);
+      setOrdered((prev) => ({
+        order: prev.order,
+        price: prev.price,
+        takeout: prev.takeout,
+        menu: newMenu,
+      }));
+      setProcessIdx((prev) => prev + 1);
+      setIsProcessing(false);
+      setText("");
+      setCode(1001);
+      history.push("/processing");
     }
     if (code === 2007) {
       //code 2007: 세트충돌
       //TODO: 세트 충돌 알려주기 ex. 콜라, 사이다
     }
   }, [code]);
+
   return (
     <Wrapper>
       <MenuCard

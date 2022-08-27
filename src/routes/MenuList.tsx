@@ -2,7 +2,12 @@ import styled from "styled-components";
 import Sticky from "react-sticky-el";
 import MenuCard from "../components/MenuCard";
 import menuData from "../menu-table.json";
-import { idToName } from "../utils";
+import { idToName, makeMenu } from "../utils";
+import { useRecoilState } from "recoil";
+import { orderedMenu, procIdx, resultCode, stText } from "../atoms";
+import { useHistory } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { postConflictSolve } from "../api";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -55,6 +60,42 @@ const GridWrapper = styled.div`
 `;
 
 function MenuList() {
+  const [ordered, setOrdered] = useRecoilState(orderedMenu);
+  const [processIdx, setProcessIdx] = useRecoilState(procIdx);
+  const [option, setOption] = useState(0);
+  const [text, setText] = useRecoilState(stText);
+  const [code, setCode] = useRecoilState(resultCode);
+  const history = useHistory();
+
+  //api 호출
+  useEffect(() => {
+    if (code === 1003 || code === 1002) {
+      //code 1003: 충돌메뉴 선택 locals
+      postConflictSolve(text, ordered.menu[processIdx].id).then((res) => {
+        setCode(res.code);
+        setOption(res.resolve);
+      });
+    }
+  }, [text]);
+
+  //code 확인
+  useEffect(() => {
+    if (code === 2002) {
+      //code 2002: 충돌해결
+      //TODO: 다음으로 넘기기
+      const newMenu = makeMenu(ordered.menu, processIdx, "ID", [option]);
+      setOrdered((prev) => ({
+        order: prev.order,
+        price: prev.price,
+        takeout: prev.takeout,
+        menu: newMenu,
+      }));
+      setCode(2003);
+      setText("");
+      history.push("/processing/option");
+    }
+  }, [code]);
+
   return (
     <Wrapper className="scroll-area">
       {[1, 2, 3].map((i) => (
@@ -70,7 +111,7 @@ function MenuList() {
             </Category>
           </Sticky>
           <GridWrapper>
-            {Object.keys(menuData).map((id, idx) => {
+            {ordered.menu[processIdx].id.map((id, idx) => {
               if (i * 100 < Number(id) && Number(id) < (i + 1) * 100) {
                 return (
                   <MenuCard

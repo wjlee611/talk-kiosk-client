@@ -129,6 +129,11 @@ export interface IPostOrderList {
   code: number;
 }
 
+export interface IPostConflictSolve {
+  resolve: number;
+  code: number;
+}
+
 export interface IPostOption {
   option: number[];
   code: number;
@@ -145,13 +150,37 @@ export async function postOrderList(text: string): Promise<IPostOrderList> {
     const postJson: any = { text: text };
 
     const data = await axios.post<IPostOrderList>(
-      "http://localhost:3000/order",
+      "http://127.0.0.1:5000/order",
       JSON.stringify(postJson),
       {
         headers: header,
       }
     );
     result.order_list = data.data.order_list;
+    result.code = data.data.code;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return result;
+  }
+}
+
+export async function postConflictSolve(
+  text: string,
+  menuId: number[]
+): Promise<IPostConflictSolve> {
+  let result: IPostConflictSolve = { resolve: 0, code: 0 };
+  try {
+    const postJson: any = { text: text, menu_id: menuId };
+
+    const data = await axios.post<IPostConflictSolve>(
+      "http://127.0.0.1:5000/order/conflict",
+      JSON.stringify(postJson),
+      {
+        headers: header,
+      }
+    );
+    result.resolve = data.data.resolve;
     result.code = data.data.code;
   } catch (err) {
     console.log(err);

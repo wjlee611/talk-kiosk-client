@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { IOrdered, postOrderList } from "../api";
@@ -18,8 +19,9 @@ const Wrapper = styled.div`
 
 function KioskHome() {
   const [ordered, setOrdered] = useRecoilState(orderedMenu);
-  const text = useRecoilValue(stText);
+  const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const history = useHistory();
 
   //api 호출
   useEffect(() => {
@@ -51,9 +53,11 @@ function KioskHome() {
   useEffect(() => {
     if (code === 1001) {
       //code 1001: 성공
-      //TODO: menu 객체 배열의 id 배열 조사해서 길이가 2 이상이면 메뉴 충돌 api 호출해 해결하기
+      setText("");
+      history.push("/processing");
     }
   }, [code]);
+
   return (
     <Wrapper>
       <Stt />

@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { postOption } from "../api";
-import { menuOption, resultCode, stText } from "../atoms";
+import { menuOption, orderedMenu, procIdx, resultCode, stText } from "../atoms";
 import menuData from "../menu-table.json";
-import { idToName } from "../utils";
+import { idToName, makeMenu, makeOption } from "../utils";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -52,14 +53,16 @@ const SelectBox = styled.div<{ isSelected: boolean }>`
 `;
 
 function MenuOption() {
-  const [option, setOption] = useRecoilState(menuOption);
-  const text = useRecoilValue(stText);
+  const [ordered, setOrdered] = useRecoilState(orderedMenu);
+  const [processIdx, setProcessIdx] = useRecoilState(procIdx);
+  const [option, setOption] = useState([false, false, false, false]);
+  const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const history = useHistory();
 
   //api 호출
   useEffect(() => {
-    setCode(2003); // for test
-    if (code === 2003) {
+    if (code === 2003 || code === 1002) {
       //code 2003: 옵션변경
       postOption(text).then((res) => {
         setCode(res.code);
@@ -77,8 +80,20 @@ function MenuOption() {
     if (code === 2004) {
       //code 2004: 옵션완료
       //TODO: 다음으로 넘기기
+      const newOption = makeOption(option);
+      const newMenu = makeMenu(ordered.menu, processIdx, "OPTION", newOption);
+      setOrdered((prev) => ({
+        order: prev.order,
+        price: prev.price,
+        takeout: prev.takeout,
+        menu: newMenu,
+      }));
+      setCode(2005);
+      setText("");
+      history.push("/processing/set");
     }
   }, [code]);
+
   return (
     <Wrapper>
       {[1, 2, 3, 4].map((i) => (

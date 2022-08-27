@@ -14,7 +14,7 @@ export const stText = atom<string>({
 export const orderedMenu = atom<IOrdered>({
   key: "orderedMenu",
   default: {
-    order: Math.random() * 1000,
+    order: Math.floor(Math.random() * 10000),
     price: 0,
     takeout: false,
     menu: [],
@@ -23,6 +23,16 @@ export const orderedMenu = atom<IOrdered>({
 
 export const resultCode = atom<number | undefined>({
   key: "resultCode",
+  default: 0,
+});
+
+export const processing = atom<boolean>({
+  key: "processing",
+  default: false,
+});
+
+export const procIdx = atom<number>({
+  key: "procIdx",
   default: 0,
 });
 
