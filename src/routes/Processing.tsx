@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -28,23 +28,27 @@ function Processing() {
   const [isProcessing, setIsProcessing] = useRecoilState(processing);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
+  const [isFirst, setIsFirst] = useState(true);
 
   useEffect(() => {
-    if (processIdx < ordered.menu.length) {
-      if (!isProcessing && code === 1001) {
-        setIsProcessing(true);
-        if (ordered.menu[processIdx].id.length > 1) {
-          setCode(1003);
-          history.push("/processing/list");
-        } else {
-          setCode(2003);
-          history.push("/processing/option");
+    if (!isFirst) {
+      if (processIdx < ordered.menu.length) {
+        if (!isProcessing && code === 1001) {
+          setIsProcessing(true);
+          if (ordered.menu[processIdx].id.length > 1) {
+            setCode(1003);
+            history.push("/processing/list");
+          } else {
+            setCode(2003);
+            history.push("/processing/option");
+          }
         }
+      } else {
+        console.log("final result:", ordered);
       }
-    } else {
-      console.log("final result:", ordered);
     }
-  }, [ordered, isProcessing, code]);
+    setIsFirst(false);
+  }, [ordered, isProcessing, isFirst]);
 
   return (
     <Wrapper>

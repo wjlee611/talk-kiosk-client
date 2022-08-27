@@ -59,20 +59,24 @@ function MenuOption() {
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
+  const [isFirst, setIsFirst] = useState(true);
 
   //api 호출
   useEffect(() => {
-    if (code === 2003 || code === 1002) {
-      //code 2003: 옵션변경
-      postOption(text).then((res) => {
-        setCode(res.code);
-        let tmpOption = [...option];
-        res.option.map((i) => {
-          tmpOption[i - 2000 - 1] = !tmpOption[i - 2000 - 1];
+    if (!isFirst) {
+      if (code === 2003 || code === 1002) {
+        //code 2003: 옵션변경
+        postOption(text).then((res) => {
+          setCode(res.code);
+          let tmpOption = [...option];
+          res.option.map((i) => {
+            tmpOption[i - 2000 - 1] = !tmpOption[i - 2000 - 1];
+          });
+          setOption(tmpOption);
         });
-        setOption(tmpOption);
-      });
+      }
     }
+    setIsFirst(false);
   }, [text]);
 
   //code 확인

@@ -66,35 +66,34 @@ function MenuList() {
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
+  const [isFirst, setIsFirst] = useState(true);
 
   //api 호출
   useEffect(() => {
-    if (code === 1003 || code === 1002) {
-      //code 1003: 충돌메뉴 선택 locals
-      postConflictSolve(text, ordered.menu[processIdx].id).then((res) => {
-        setCode(res.code);
-        setOption(res.resolve);
-      });
+    if (!isFirst) {
+      if (code === 1003 || code === 1002) {
+        //code 1003: 충돌메뉴 선택 (local)
+        postConflictSolve(text, ordered.menu[processIdx].id).then((res) => {
+          if (res.code === 2002) {
+            //code 2002: 충돌해결
+            const newMenu = makeMenu(ordered.menu, processIdx, "ID", [
+              res.resolve,
+            ]);
+            setOrdered((prev) => ({
+              order: prev.order,
+              price: prev.price,
+              takeout: prev.takeout,
+              menu: newMenu,
+            }));
+            setCode(2003);
+            setText("");
+            history.push("/processing/option");
+          }
+        });
+      }
     }
+    setIsFirst(false);
   }, [text]);
-
-  //code 확인
-  useEffect(() => {
-    if (code === 2002) {
-      //code 2002: 충돌해결
-      //TODO: 다음으로 넘기기
-      const newMenu = makeMenu(ordered.menu, processIdx, "ID", [option]);
-      setOrdered((prev) => ({
-        order: prev.order,
-        price: prev.price,
-        takeout: prev.takeout,
-        menu: newMenu,
-      }));
-      setCode(2003);
-      setText("");
-      history.push("/processing/option");
-    }
-  }, [code]);
 
   return (
     <Wrapper className="scroll-area">
