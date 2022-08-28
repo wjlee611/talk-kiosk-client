@@ -26,7 +26,7 @@ function KioskHome() {
 
   //api 호출
   useEffect(() => {
-    if (!isFirst) {
+    if (!isFirst && code !== 2001) {
       postOrderList(text).then((res) => {
         setCode(res.code);
         let tmpOrderedMenu: IOrdered["menu"] = [];
@@ -51,8 +51,8 @@ function KioskHome() {
 
   //code 확인
   useEffect(() => {
-    if (code === 1001) {
-      //code 1001: 성공
+    if (code === 1001 || code === 2001) {
+      //code 1001: 성공, 2001: 주문완료
       setText("");
       history.push("/processing");
     }
@@ -61,7 +61,6 @@ function KioskHome() {
   return (
     <Wrapper>
       <Stt />
-      <CartList />
     </Wrapper>
   );
 }
