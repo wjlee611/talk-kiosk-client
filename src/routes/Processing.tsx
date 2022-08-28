@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { orderedMenu, processing, procIdx, resultCode } from "../atoms";
 import Stt from "../components/Stt";
+import MenuConfirm from "./MenuConfirm";
 import MenuList from "./MenuList";
 import MenuOption from "./MenuOption";
 import MenuSet from "./MenuSet";
@@ -37,18 +38,28 @@ function Processing() {
           setIsProcessing(true);
           if (ordered.menu[processIdx].id.length > 1) {
             setCode(1003);
-            history.push("/processing/list");
           } else {
             setCode(2003);
-            history.push("/processing/option");
           }
         }
       } else {
-        console.log("final result:", ordered);
+        setCode(2001);
       }
     }
     setIsFirst(false);
   }, [ordered, isProcessing, isFirst]);
+
+  //code 확인
+  useEffect(() => {
+    if (code === 1003) {
+      history.push("/processing/list");
+    } else if (code === 2003) {
+      history.push("/processing/option");
+    } else if (code === 2001) {
+      setCode(0);
+      history.push("/processing/confirm");
+    }
+  }, [code]);
 
   return (
     <Wrapper>
@@ -66,6 +77,9 @@ function Processing() {
           </Route>
           <Route path={"/processing/set"}>
             <MenuSet />
+          </Route>
+          <Route path={"/processing/confirm"}>
+            <MenuConfirm />
           </Route>
         </Switch>
       </ComponentWrapper>

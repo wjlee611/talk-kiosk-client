@@ -3,7 +3,14 @@ import { useHistory } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { postOption } from "../api";
-import { menuOption, orderedMenu, procIdx, resultCode, stText } from "../atoms";
+import {
+  menuOption,
+  orderedMenu,
+  processing,
+  procIdx,
+  resultCode,
+  stText,
+} from "../atoms";
 import menuData from "../menu-table.json";
 import { idToName, makeMenu, makeOption } from "../utils";
 
@@ -55,6 +62,7 @@ const SelectBox = styled.div<{ isSelected: boolean }>`
 function MenuOption() {
   const [ordered, setOrdered] = useRecoilState(orderedMenu);
   const [processIdx, setProcessIdx] = useRecoilState(procIdx);
+  const [isProcessing, setIsProcessing] = useRecoilState(processing);
   const [option, setOption] = useState([false, false, false, false]);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
@@ -92,9 +100,16 @@ function MenuOption() {
         takeout: prev.takeout,
         menu: newMenu,
       }));
-      setCode(2005);
       setText("");
-      history.push("/processing/set");
+      if (ordered.menu[processIdx].set.length > 0) {
+        setCode(2005);
+        history.push("/processing/set");
+      } else {
+        setProcessIdx((prev) => prev + 1);
+        setIsProcessing(false);
+        setCode(1001);
+        history.push("/processing");
+      }
     }
   }, [code]);
 
