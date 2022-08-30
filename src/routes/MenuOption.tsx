@@ -3,14 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { postOption } from "../api";
-import {
-  menuOption,
-  orderedMenu,
-  processing,
-  procIdx,
-  resultCode,
-  stText,
-} from "../atoms";
+import { orderedMenu, processing, procIdx, resultCode, stText } from "../atoms";
 import menuData from "../menu-table.json";
 import { idToName, makeMenu, makeOption } from "../utils";
 
@@ -101,6 +94,7 @@ function MenuOption() {
         menu: newMenu,
       }));
       setText("");
+      setOption([false, false, false, false]);
       if (ordered.menu[processIdx].set.length > 0) {
         setCode(2005);
         history.push("/processing/set");

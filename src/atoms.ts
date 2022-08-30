@@ -35,13 +35,3 @@ export const procIdx = atom<number>({
   key: "procIdx",
   default: 0,
 });
-
-export const menuSet = atom<number[]>({
-  key: "set",
-  default: [201, 301],
-});
-
-export const menuOption = atom<boolean[]>({
-  key: "option",
-  default: [false, false, false, false],
-});

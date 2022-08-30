@@ -3,14 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { postSet } from "../api";
-import {
-  menuSet,
-  orderedMenu,
-  processing,
-  procIdx,
-  resultCode,
-  stText,
-} from "../atoms";
+import { orderedMenu, processing, procIdx, resultCode, stText } from "../atoms";
 import MenuCard from "../components/MenuCard";
 import menuData from "../menu-table.json";
 import { idToName, makeMenu } from "../utils";
