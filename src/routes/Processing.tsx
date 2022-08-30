@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import "../css/transition.css";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { orderedMenu, processing, procIdx, resultCode } from "../atoms";
@@ -61,23 +63,98 @@ function Processing() {
     <Wrapper>
       <Stt />
       <ComponentWrapper>
-        <Switch>
-          <Route path={"/processing/list"}>
-            <MenuList />
-          </Route>
-          <Route path={"/processing/spec"}>
-            <MenuSpec />
-          </Route>
-          <Route path={"/processing/option"}>
-            <MenuOption />
-          </Route>
-          <Route path={"/processing/set"}>
-            <MenuSet />
-          </Route>
-          <Route path={"/processing/confirm"}>
-            <MenuConfirm />
-          </Route>
-        </Switch>
+        <Route
+          render={({ location }) => {
+            return (
+              <TransitionGroup className="transition-group">
+                <CSSTransition
+                  key={location.key}
+                  timeout={500}
+                  classNames="scale_fade"
+                  unmountOnExit
+                >
+                  <Switch location={location}>
+                    <Route path={"/processing/list"}>
+                      <div
+                        style={{
+                          width: "75%",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "25%",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuList />
+                      </div>
+                    </Route>
+                    <Route path={"/processing/spec"}>
+                      <div
+                        style={{
+                          width: "75%",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "25%",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuSpec />
+                      </div>
+                    </Route>
+                    <Route path={"/processing/option"}>
+                      <div
+                        style={{
+                          width: "75%",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "25%",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuOption />
+                      </div>
+                    </Route>
+                    <Route path={"/processing/set"}>
+                      <div
+                        style={{
+                          width: "75%",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "25%",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuSet />
+                      </div>
+                    </Route>
+                    <Route path={"/processing/confirm"}>
+                      <div
+                        style={{
+                          width: "75%",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "25%",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuConfirm />
+                      </div>
+                    </Route>
+                  </Switch>
+                </CSSTransition>
+              </TransitionGroup>
+            );
+          }}
+        ></Route>
       </ComponentWrapper>
     </Wrapper>
   );
