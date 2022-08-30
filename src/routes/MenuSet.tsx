@@ -15,9 +15,10 @@ const Wrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   padding: 0 50px;
+  position: relative;
 `;
 const Header = styled.div`
-  width: 60%;
+  width: 90%;
   height: 100px;
   background: linear-gradient(90deg, #f65858, #e64848);
   border: 3px solid white;
@@ -29,9 +30,9 @@ const Header = styled.div`
   padding-left: 30px;
   margin-left: -3px;
   color: white;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
-  position: fixed;
+  position: absolute;
   top: 0;
   z-index: 1;
 `;

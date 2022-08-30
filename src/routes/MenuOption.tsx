@@ -14,9 +14,10 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;
 const Header = styled.div`
-  width: 60%;
+  width: 90%;
   height: 100px;
   background: linear-gradient(90deg, #f65858, #e64848);
   border: 3px solid white;
@@ -28,9 +29,9 @@ const Header = styled.div`
   padding-left: 30px;
   margin-left: -3px;
   color: white;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
-  position: fixed;
+  position: absolute;
   top: 0;
   z-index: 1;
 `;
@@ -127,8 +128,12 @@ function MenuOption() {
   return (
     <Wrapper>
       <Header>
-        "{idToName(menuData, ordered.menu[processIdx].id[0])}" 에 대한 옵션을
-        선택해주세요!
+        "
+        {idToName(
+          menuData,
+          ordered.menu[processIdx] ? ordered.menu[processIdx].id[0] : 0
+        )}
+        " 에 대한 옵션을 선택해주세요!
       </Header>
       {[1, 2, 3, 4].map((i) => (
         <Card key={i} isSelected={option[i - 1]}>

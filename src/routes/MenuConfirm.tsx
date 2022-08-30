@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   padding-top: 130px;
   padding-bottom: 50px;
   overflow-y: scroll;
+  position: relative;
 `;
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -25,7 +26,7 @@ const ScrollWrapper = styled.div`
   position: relative;
 `;
 const Header = styled.div`
-  width: 60%;
+  width: 90%;
   height: 100px;
   background: linear-gradient(90deg, #f65858, #e64848);
   border: 3px solid white;
@@ -39,7 +40,7 @@ const Header = styled.div`
   color: white;
   font-size: 36px;
   font-weight: 700;
-  position: fixed;
+  position: absolute;
   top: 0;
   z-index: 1;
 `;
