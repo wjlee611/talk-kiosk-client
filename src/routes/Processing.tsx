@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { orderedMenu, processing, procIdx, resultCode } from "../atoms";
 import Stt from "../components/Stt";
@@ -24,30 +24,26 @@ const ComponentWrapper = styled.div`
 `;
 
 function Processing() {
-  const [ordered, setOrdered] = useRecoilState(orderedMenu);
-  const [processIdx, setProcessIdx] = useRecoilState(procIdx);
+  const ordered = useRecoilValue(orderedMenu);
+  const processIdx = useRecoilValue(procIdx);
   const [isProcessing, setIsProcessing] = useRecoilState(processing);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
-  const [isFirst, setIsFirst] = useState(true);
 
   useEffect(() => {
-    if (!isFirst) {
-      if (processIdx < ordered.menu.length) {
-        if (!isProcessing && code === 1001) {
-          setIsProcessing(true);
-          if (ordered.menu[processIdx].id.length > 1) {
-            setCode(1003);
-          } else {
-            setCode(2003);
-          }
+    if (processIdx < ordered.menu.length) {
+      if (!isProcessing && code === 1001) {
+        setIsProcessing(true);
+        if (ordered.menu[processIdx].id.length > 1) {
+          setCode(1003);
+        } else {
+          setCode(2003);
         }
-      } else {
-        setCode(2001);
       }
+    } else {
+      setCode(2001);
     }
-    setIsFirst(false);
-  }, [ordered, isProcessing, isFirst]);
+  }, [ordered, isProcessing]);
 
   //code 확인
   useEffect(() => {

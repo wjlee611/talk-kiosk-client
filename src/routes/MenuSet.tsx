@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { postSet } from "../api";
 import { orderedMenu, processing, procIdx, resultCode, stText } from "../atoms";
@@ -16,22 +16,40 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 0 50px;
 `;
+const Header = styled.div`
+  width: 60%;
+  height: 100px;
+  background: linear-gradient(90deg, #f65858, #e64848);
+  border: 3px solid white;
+  border-top: none;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  margin-left: -3px;
+  color: white;
+  font-size: 26px;
+  font-weight: 700;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+`;
 
 function MenuSet() {
   const [ordered, setOrdered] = useRecoilState(orderedMenu);
   const [processIdx, setProcessIdx] = useRecoilState(procIdx);
-  const [isProcessing, setIsProcessing] = useRecoilState(processing);
+  const setIsProcessing = useSetRecoilState(processing);
   const [option, setOption] = useState<number[]>(
     processIdx < ordered.menu.length ? ordered.menu[processIdx].set : []
   );
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
-  const [isFirst, setIsFirst] = useState(true);
 
   //api 호출
   useEffect(() => {
-    if (!isFirst) {
+    if (text) {
       if (code === 2005 || code === 1002 || code === 2007) {
         //code 2005: 세트변경
         postSet(text, [...option]).then((res) => {
@@ -40,7 +58,6 @@ function MenuSet() {
         });
       }
     }
-    setIsFirst(false);
   }, [text]);
 
   //code 확인
@@ -69,6 +86,14 @@ function MenuSet() {
 
   return (
     <Wrapper>
+      <Header>
+        "
+        {idToName(
+          menuData,
+          ordered.menu[processIdx] ? ordered.menu[processIdx].id[0] : 0
+        )}
+        " 에 대한 세트 메뉴를 선택해주세요!
+      </Header>
       <MenuCard
         name={
           option[0] === 0

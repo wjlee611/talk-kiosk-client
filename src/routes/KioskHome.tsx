@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { IOrdered, postOrderList } from "../api";
 import { orderedMenu, resultCode, stText } from "../atoms";
-import CartList from "../components/CartList";
 import Stt from "../components/Stt";
 
 const Wrapper = styled.div`
@@ -18,15 +17,14 @@ const Wrapper = styled.div`
 `;
 
 function KioskHome() {
-  const [ordered, setOrdered] = useRecoilState(orderedMenu);
+  const setOrdered = useSetRecoilState(orderedMenu);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
-  const [isFirst, setIsFirst] = useState(true);
 
   //api 호출
   useEffect(() => {
-    if (!isFirst && code !== 2001) {
+    if (text && code !== 2001) {
       postOrderList(text).then((res) => {
         setCode(res.code);
         let tmpOrderedMenu: IOrdered["menu"] = [];
@@ -46,8 +44,7 @@ function KioskHome() {
         }));
       });
     }
-    setIsFirst(false);
-  }, [text, isFirst]);
+  }, [text]);
 
   //code 확인
   useEffect(() => {
