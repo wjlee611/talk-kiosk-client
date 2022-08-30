@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   background-color: #fec260;
 `;
 const ComponentWrapper = styled.div`
-  width: 300%;
+  width: calc(100% - 360px);
   height: 100%;
 `;
 
@@ -61,7 +61,9 @@ function Processing() {
 
   return (
     <Wrapper>
-      <Stt />
+      <div style={{ width: "360px", paddingLeft: "30px" }}>
+        <Stt />
+      </div>
       <ComponentWrapper>
         <Route
           render={({ location }) => {
@@ -77,10 +79,10 @@ function Processing() {
                     <Route path={"/processing/list"}>
                       <div
                         style={{
-                          width: "75%",
+                          width: "calc(100% - 360px)",
                           height: "100%",
                           position: "fixed",
-                          marginLeft: "25%",
+                          marginLeft: "360px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",
@@ -92,10 +94,10 @@ function Processing() {
                     <Route path={"/processing/spec"}>
                       <div
                         style={{
-                          width: "75%",
+                          width: "calc(100% - 360px)",
                           height: "100%",
                           position: "fixed",
-                          marginLeft: "25%",
+                          marginLeft: "360px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",
@@ -107,10 +109,10 @@ function Processing() {
                     <Route path={"/processing/option"}>
                       <div
                         style={{
-                          width: "75%",
+                          width: "calc(100% - 360px)",
                           height: "100%",
                           position: "fixed",
-                          marginLeft: "25%",
+                          marginLeft: "360px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",
@@ -122,10 +124,10 @@ function Processing() {
                     <Route path={"/processing/set"}>
                       <div
                         style={{
-                          width: "75%",
+                          width: "calc(100% - 360px)",
                           height: "100%",
                           position: "fixed",
-                          marginLeft: "25%",
+                          marginLeft: "360px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",
@@ -137,10 +139,10 @@ function Processing() {
                     <Route path={"/processing/confirm"}>
                       <div
                         style={{
-                          width: "75%",
+                          width: "calc(100% - 360px)",
                           height: "100%",
                           position: "fixed",
-                          marginLeft: "25%",
+                          marginLeft: "360px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",

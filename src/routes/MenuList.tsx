@@ -52,8 +52,9 @@ const Category = styled.div`
 const GridWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 300px);
+  grid-template-columns: repeat(auto-fit, 300px);
   grid-auto-rows: minmax(300px, 300px);
+  justify-items: center;
   gap: 50px;
   padding: 50px;
   justify-content: center;
