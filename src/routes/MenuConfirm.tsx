@@ -185,6 +185,7 @@ function MenuConfirm() {
       history.push("/processing");
     } else if (code === 2001) {
       //code 2001: 주문완료
+      setText("");
       console.log("final result:", ordered);
     }
   }, [code]);

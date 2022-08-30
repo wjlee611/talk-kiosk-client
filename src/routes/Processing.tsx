@@ -71,7 +71,7 @@ function Processing() {
               <TransitionGroup className="transition-group">
                 <CSSTransition
                   key={location.key}
-                  timeout={500}
+                  timeout={200}
                   classNames="scale_fade"
                   unmountOnExit
                 >
