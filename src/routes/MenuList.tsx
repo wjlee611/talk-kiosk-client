@@ -3,10 +3,10 @@ import Sticky from "react-sticky-el";
 import MenuCard from "../components/MenuCard";
 import menuData from "../menu-table.json";
 import { idToName, makeMenu } from "../utils";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { orderedMenu, procIdx, resultCode, stText } from "../atoms";
 import { useHistory } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { postConflictSolve } from "../api";
 
 const Wrapper = styled.div`
@@ -52,8 +52,9 @@ const Category = styled.div`
 const GridWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 300px);
+  grid-template-columns: repeat(auto-fit, 300px);
   grid-auto-rows: minmax(300px, 300px);
+  justify-items: center;
   gap: 50px;
   padding: 50px;
   justify-content: center;
@@ -61,16 +62,14 @@ const GridWrapper = styled.div`
 
 function MenuList() {
   const [ordered, setOrdered] = useRecoilState(orderedMenu);
-  const [processIdx, setProcessIdx] = useRecoilState(procIdx);
-  const [option, setOption] = useState(0);
+  const processIdx = useRecoilValue(procIdx);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
-  const [isFirst, setIsFirst] = useState(true);
 
   //api 호출
   useEffect(() => {
-    if (!isFirst) {
+    if (text) {
       if (code === 1003 || code === 1002) {
         //code 1003: 충돌메뉴 선택 (local)
         postConflictSolve(text, ordered.menu[processIdx].id).then((res) => {
@@ -92,7 +91,6 @@ function MenuList() {
         });
       }
     }
-    setIsFirst(false);
   }, [text]);
 
   return (

@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { postOption } from "../api";
-import {
-  menuOption,
-  orderedMenu,
-  processing,
-  procIdx,
-  resultCode,
-  stText,
-} from "../atoms";
+import { orderedMenu, processing, procIdx, resultCode, stText } from "../atoms";
 import menuData from "../menu-table.json";
 import { idToName, makeMenu, makeOption } from "../utils";
 
@@ -21,6 +14,26 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+`;
+const Header = styled.div`
+  width: 90%;
+  height: 100px;
+  background: linear-gradient(90deg, #f65858, #e64848);
+  border: 3px solid white;
+  border-top: none;
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  margin-left: -3px;
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  position: absolute;
+  top: 0;
+  z-index: 1;
 `;
 const Card = styled.div<{ isSelected: boolean }>`
   width: 500px;
@@ -62,16 +75,15 @@ const SelectBox = styled.div<{ isSelected: boolean }>`
 function MenuOption() {
   const [ordered, setOrdered] = useRecoilState(orderedMenu);
   const [processIdx, setProcessIdx] = useRecoilState(procIdx);
-  const [isProcessing, setIsProcessing] = useRecoilState(processing);
+  const setIsProcessing = useSetRecoilState(processing);
   const [option, setOption] = useState([false, false, false, false]);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
-  const [isFirst, setIsFirst] = useState(true);
 
   //api 호출
   useEffect(() => {
-    if (!isFirst) {
+    if (text) {
       if (code === 2003 || code === 1002) {
         //code 2003: 옵션변경
         postOption(text).then((res) => {
@@ -84,7 +96,6 @@ function MenuOption() {
         });
       }
     }
-    setIsFirst(false);
   }, [text]);
 
   //code 확인
@@ -101,6 +112,7 @@ function MenuOption() {
         menu: newMenu,
       }));
       setText("");
+      setOption([false, false, false, false]);
       if (ordered.menu[processIdx].set.length > 0) {
         setCode(2005);
         history.push("/processing/set");
@@ -115,6 +127,14 @@ function MenuOption() {
 
   return (
     <Wrapper>
+      <Header>
+        "
+        {idToName(
+          menuData,
+          ordered.menu[processIdx] ? ordered.menu[processIdx].id[0] : 0
+        )}
+        " 에 대한 옵션을 선택해주세요!
+      </Header>
       {[1, 2, 3, 4].map((i) => (
         <Card key={i} isSelected={option[i - 1]}>
           <span>{idToName(menuData, i + 1000)}</span>

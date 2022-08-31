@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
-import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import "../css/transition.css";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { orderedMenu, processing, procIdx, resultCode } from "../atoms";
 import Stt from "../components/Stt";
@@ -19,35 +21,31 @@ const Wrapper = styled.div`
   background-color: #fec260;
 `;
 const ComponentWrapper = styled.div`
-  width: 300%;
+  width: calc(100% - 360px);
   height: 100%;
 `;
 
 function Processing() {
-  const [ordered, setOrdered] = useRecoilState(orderedMenu);
-  const [processIdx, setProcessIdx] = useRecoilState(procIdx);
+  const ordered = useRecoilValue(orderedMenu);
+  const processIdx = useRecoilValue(procIdx);
   const [isProcessing, setIsProcessing] = useRecoilState(processing);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
-  const [isFirst, setIsFirst] = useState(true);
 
   useEffect(() => {
-    if (!isFirst) {
-      if (processIdx < ordered.menu.length) {
-        if (!isProcessing && code === 1001) {
-          setIsProcessing(true);
-          if (ordered.menu[processIdx].id.length > 1) {
-            setCode(1003);
-          } else {
-            setCode(2003);
-          }
+    if (processIdx < ordered.menu.length) {
+      if (!isProcessing && code === 1001) {
+        setIsProcessing(true);
+        if (ordered.menu[processIdx].id.length > 1) {
+          setCode(1003);
+        } else {
+          setCode(2003);
         }
-      } else {
-        setCode(2001);
       }
+    } else {
+      setCode(2001);
     }
-    setIsFirst(false);
-  }, [ordered, isProcessing, isFirst]);
+  }, [ordered, isProcessing]);
 
   //code 확인
   useEffect(() => {
@@ -63,25 +61,102 @@ function Processing() {
 
   return (
     <Wrapper>
-      <Stt />
+      <div style={{ width: "360px", paddingLeft: "30px" }}>
+        <Stt />
+      </div>
       <ComponentWrapper>
-        <Switch>
-          <Route path={"/processing/list"}>
-            <MenuList />
-          </Route>
-          <Route path={"/processing/spec"}>
-            <MenuSpec />
-          </Route>
-          <Route path={"/processing/option"}>
-            <MenuOption />
-          </Route>
-          <Route path={"/processing/set"}>
-            <MenuSet />
-          </Route>
-          <Route path={"/processing/confirm"}>
-            <MenuConfirm />
-          </Route>
-        </Switch>
+        <Route
+          render={({ location }) => {
+            return (
+              <TransitionGroup className="transition-group">
+                <CSSTransition
+                  key={location.key}
+                  timeout={200}
+                  classNames="scale_fade"
+                  unmountOnExit
+                >
+                  <Switch location={location}>
+                    <Route path={"/processing/list"}>
+                      <div
+                        style={{
+                          width: "calc(100% - 360px)",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "360px",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuList />
+                      </div>
+                    </Route>
+                    <Route path={"/processing/spec"}>
+                      <div
+                        style={{
+                          width: "calc(100% - 360px)",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "360px",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuSpec />
+                      </div>
+                    </Route>
+                    <Route path={"/processing/option"}>
+                      <div
+                        style={{
+                          width: "calc(100% - 360px)",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "360px",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuOption />
+                      </div>
+                    </Route>
+                    <Route path={"/processing/set"}>
+                      <div
+                        style={{
+                          width: "calc(100% - 360px)",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "360px",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuSet />
+                      </div>
+                    </Route>
+                    <Route path={"/processing/confirm"}>
+                      <div
+                        style={{
+                          width: "calc(100% - 360px)",
+                          height: "100%",
+                          position: "fixed",
+                          marginLeft: "360px",
+                          left: 0,
+                          top: 0,
+                          overflow: "hidden",
+                        }}
+                      >
+                        <MenuConfirm />
+                      </div>
+                    </Route>
+                  </Switch>
+                </CSSTransition>
+              </TransitionGroup>
+            );
+          }}
+        ></Route>
       </ComponentWrapper>
     </Wrapper>
   );

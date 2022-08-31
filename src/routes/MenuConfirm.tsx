@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   padding-top: 130px;
   padding-bottom: 50px;
   overflow-y: scroll;
+  position: relative;
 `;
 const ScrollWrapper = styled.div`
   width: 100%;
@@ -25,7 +26,7 @@ const ScrollWrapper = styled.div`
   position: relative;
 `;
 const Header = styled.div`
-  width: 60%;
+  width: 90%;
   height: 100px;
   background: linear-gradient(90deg, #f65858, #e64848);
   border: 3px solid white;
@@ -39,7 +40,7 @@ const Header = styled.div`
   color: white;
   font-size: 36px;
   font-weight: 700;
-  position: fixed;
+  position: absolute;
   top: 0;
   z-index: 1;
 `;
@@ -151,11 +152,10 @@ function MenuConfirm() {
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const history = useHistory();
-  const [isFirst, setIsFirst] = useState(true);
 
   //api 호출
   useEffect(() => {
-    if (!isFirst) {
+    if (text) {
       postOrderList(text).then((res) => {
         setCode(res.code);
         let tmpOrderedMenu: IOrdered["menu"] = [];
@@ -175,8 +175,7 @@ function MenuConfirm() {
         }));
       });
     }
-    setIsFirst(false);
-  }, [text, isFirst]);
+  }, [text]);
 
   //code 확인
   useEffect(() => {
@@ -186,6 +185,7 @@ function MenuConfirm() {
       history.push("/processing");
     } else if (code === 2001) {
       //code 2001: 주문완료
+      setText("");
       console.log("final result:", ordered);
     }
   }, [code]);
