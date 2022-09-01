@@ -61,7 +61,7 @@ function Processing() {
 
   return (
     <Wrapper>
-      <div style={{ width: "360px", paddingLeft: "30px" }}>
+      <div style={{ width: "360px", height: "100%" }}>
         <Stt />
       </div>
       <ComponentWrapper>

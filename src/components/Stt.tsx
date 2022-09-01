@@ -1,56 +1,97 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import styled from "styled-components";
-import microphone from "../images/microphone.svg";
-import caretDown from "../images/caret-down.svg";
-import { useSetRecoilState } from "recoil";
-import { stText } from "../atoms";
+// import microphone from "../images/microphone.svg";
+// import caretDown from "../images/caret-down.svg";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { stText, textProcessing } from "../atoms";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ on: "true" | "false" }>`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 100px;
   padding: 0 30px;
-`;
-const MicBtn = styled.button`
-  width: 300px;
-  height: 300px;
-  background-color: white;
-  border: none;
-  border-radius: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const Mic = styled.img<{ on: "true" | "false" }>`
-  width: 50%;
-  height: 50%;
-  filter: ${(props) =>
+  position: relative;
+  background: ${(props) =>
     props.on === "true"
-      ? "invert(82%) sepia(80%) saturate(5668%) hue-rotate(310deg) brightness(100%) contrast(103%)"
-      : "opacity(80%)"};
+      ? "linear-gradient(#00000000, #FFD32D88)"
+      : "linear-gradient(#00000000, #FF990044)"};
 `;
 const HintBox = styled.div`
+  text-align: center;
   padding: 20px;
   padding-bottom: 15px;
   border-radius: 10px;
-  background-color: white;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
 `;
-const HintIcon = styled.img`
-  width: 20px;
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(235deg)
-    brightness(104%) contrast(102%);
-  margin-bottom: 20px;
+const KeywordWrapper = styled.div<{ listening: "true" | "false" }>`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  pointer-events: none;
+  opacity: ${(props) => (props.listening === "true" ? 0 : 1)};
+  transition: opacity 0.3s linear;
+`;
+const KeywordBox = styled.span`
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  animation: bubble 2s ease-in-out infinite, opacity 0.5s ease-in-out forwards;
+  opacity: 0;
+  @keyframes bubble {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  @keyframes opacity {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
+const KB1 = styled(KeywordBox)`
+  top: 20%;
+  margin-left: 20%;
+  animation-delay: 0s;
+`;
+const KB2 = styled(KeywordBox)`
+  top: 30%;
+  margin-right: 10%;
+  animation-delay: 0.25s;
+`;
+const KB3 = styled(KeywordBox)`
+  top: 70%;
+  margin-left: 10%;
+  animation-delay: 0.5s;
+`;
+const KB4 = styled(KeywordBox)`
+  top: 80%;
+  margin-right: 20%;
+  animation-delay: 0.75s;
 `;
 
 function Stt() {
   const setSTText = useSetRecoilState(stText);
+  const isTextProcessing = useRecoilValue(textProcessing);
 
   const {
     transcript,
@@ -93,21 +134,25 @@ function Stt() {
   };
 
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick} on={listening ? "true" : "false"}>
       <HintBox>
-        {listening
+        {isTextProcessing
+          ? "처리 중 입니다..."
+          : listening
           ? transcript
             ? transcript
             : "( 듣고있어요! )"
-          : '"불고기 버거 하나만 주세요" 와 같이 말해주세요!'}
+          : "여기를 터치(클릭)하신 후 말씀해주세요!"}
       </HintBox>
-      <HintIcon src={caretDown} />
-      <MicBtn onClick={onClick}>
-        <Mic src={microphone} on={listening ? "true" : "false"} />
-      </MicBtn>
       <form onSubmit={onSubmit}>
         <input type="text" style={{ width: "300px" }}></input>
       </form>
+      <KeywordWrapper listening={listening ? "true" : "false"}>
+        <KB1>keyword 1</KB1>
+        <KB2>keyword 2</KB2>
+        <KB3>keyword 3</KB3>
+        <KB4>keyword 4</KB4>
+      </KeywordWrapper>
     </Wrapper>
   );
 }

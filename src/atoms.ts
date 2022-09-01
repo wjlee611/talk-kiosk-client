@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 import { IOrdered } from "./api";
+const date = new Date();
 
 export const screenUpdate = atom<boolean>({
   key: "screenUpdate",
@@ -14,7 +15,8 @@ export const stText = atom<string>({
 export const orderedMenu = atom<IOrdered>({
   key: "orderedMenu",
   default: {
-    order: Math.floor(Math.random() * 10000),
+    // order: Math.floor(Math.random() * 10000),
+    order: date.getMinutes() * 100 + date.getSeconds(),
     price: 0,
     takeout: false,
     menu: [],
@@ -34,4 +36,9 @@ export const processing = atom<boolean>({
 export const procIdx = atom<number>({
   key: "procIdx",
   default: 0,
+});
+
+export const textProcessing = atom<boolean>({
+  key: "textProcessing",
+  default: false,
 });

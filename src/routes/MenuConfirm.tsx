@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { IOrdered, postOrderList } from "../api";
-import { orderedMenu, resultCode, stText } from "../atoms";
+import { orderedMenu, resultCode, stText, textProcessing } from "../atoms";
 import menuData from "../menu-table.json";
 import { idToName } from "../utils";
 
@@ -151,13 +151,16 @@ function MenuConfirm() {
   const [ordered, setOrdered] = useRecoilState(orderedMenu);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const setTextProcessing = useSetRecoilState(textProcessing);
   const history = useHistory();
 
   //api 호출
   useEffect(() => {
     if (text) {
+      setTextProcessing(true);
       postOrderList(text).then((res) => {
         setCode(res.code);
+        setTextProcessing(false);
         let tmpOrderedMenu: IOrdered["menu"] = [];
         res.order_list.map((i) => {
           tmpOrderedMenu.push({

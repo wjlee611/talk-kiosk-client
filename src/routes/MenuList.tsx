@@ -3,8 +3,14 @@ import Sticky from "react-sticky-el";
 import MenuCard from "../components/MenuCard";
 import menuData from "../menu-table.json";
 import { idToName, makeMenu } from "../utils";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { orderedMenu, procIdx, resultCode, stText } from "../atoms";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  orderedMenu,
+  procIdx,
+  resultCode,
+  stText,
+  textProcessing,
+} from "../atoms";
 import { useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import { postConflictSolve } from "../api";
@@ -65,14 +71,17 @@ function MenuList() {
   const processIdx = useRecoilValue(procIdx);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const setTextProcessing = useSetRecoilState(textProcessing);
   const history = useHistory();
 
   //api 호출
   useEffect(() => {
     if (text) {
+      setTextProcessing(true);
       if (code === 1003 || code === 1002) {
         //code 1003: 충돌메뉴 선택 (local)
         postConflictSolve(text, ordered.menu[processIdx].id).then((res) => {
+          setTextProcessing(false);
           if (res.code === 2002) {
             //code 2002: 충돌해결
             const newMenu = makeMenu(ordered.menu, processIdx, "ID", [
@@ -89,6 +98,8 @@ function MenuList() {
             history.push("/processing/option");
           }
         });
+      } else {
+        setTextProcessing(false);
       }
     }
   }, [text]);

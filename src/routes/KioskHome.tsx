@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { IOrdered, postOrderList } from "../api";
-import { orderedMenu, resultCode, stText } from "../atoms";
+import { orderedMenu, resultCode, stText, textProcessing } from "../atoms";
 import Stt from "../components/Stt";
 
 const Wrapper = styled.div`
@@ -20,13 +20,16 @@ function KioskHome() {
   const setOrdered = useSetRecoilState(orderedMenu);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const setTextProcessing = useSetRecoilState(textProcessing);
   const history = useHistory();
 
   //api 호출
   useEffect(() => {
     if (text && code !== 2001) {
+      setTextProcessing(true);
       postOrderList(text).then((res) => {
         setCode(res.code);
+        setTextProcessing(false);
         let tmpOrderedMenu: IOrdered["menu"] = [];
         res.order_list.map((i) => {
           tmpOrderedMenu.push({

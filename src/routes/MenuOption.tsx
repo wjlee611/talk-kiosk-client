@@ -3,7 +3,14 @@ import { useHistory } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { postOption } from "../api";
-import { orderedMenu, processing, procIdx, resultCode, stText } from "../atoms";
+import {
+  orderedMenu,
+  processing,
+  procIdx,
+  resultCode,
+  stText,
+  textProcessing,
+} from "../atoms";
 import menuData from "../menu-table.json";
 import { idToName, makeMenu, makeOption } from "../utils";
 
@@ -79,14 +86,17 @@ function MenuOption() {
   const [option, setOption] = useState([false, false, false, false]);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const setTextProcessing = useSetRecoilState(textProcessing);
   const history = useHistory();
 
   //api 호출
   useEffect(() => {
     if (text) {
+      setTextProcessing(true);
       if (code === 2003 || code === 1002) {
         //code 2003: 옵션변경
         postOption(text).then((res) => {
+          setTextProcessing(false);
           setCode(res.code);
           let tmpOption = [...option];
           res.option.map((i) => {
@@ -94,6 +104,8 @@ function MenuOption() {
           });
           setOption(tmpOption);
         });
+      } else {
+        setTextProcessing(false);
       }
     }
   }, [text]);
