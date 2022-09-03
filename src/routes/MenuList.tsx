@@ -53,7 +53,7 @@ const Category = styled.div`
   padding-left: 30px;
   margin-left: -3px;
   color: white;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 700;
 `;
 const GridWrapper = styled.div`
@@ -79,9 +79,9 @@ function MenuList() {
   //progressBar 계산
   useEffect(() => {
     if (ordered.menu[processIdx].set.length) {
-      setProgress({ value: 0.25, passConflict: true });
+      setProgress({ value: 0.25, passConflict: true, stage: "conflict" });
     } else {
-      setProgress({ value: 0.33, passConflict: true });
+      setProgress({ value: 0.33, passConflict: true, stage: "conflict" });
     }
   }, []);
 

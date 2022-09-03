@@ -61,9 +61,9 @@ function MenuSet() {
   //progressBar 계산
   useEffect(() => {
     if (progress.passConflict) {
-      setProgress({ value: 0.75, passConflict: true });
+      setProgress({ value: 0.75, passConflict: true, stage: "set" });
     } else {
-      setProgress({ value: 0.67, passConflict: false });
+      setProgress({ value: 0.67, passConflict: false, stage: "set" });
     }
   }, []);
 

@@ -28,7 +28,7 @@ const HintBox = styled.div`
   padding-bottom: 15px;
   border-radius: 10px;
   color: white;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
 `;
 const KeywordWrapper = styled.div<{ listening: "true" | "false" }>`

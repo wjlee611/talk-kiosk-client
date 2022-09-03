@@ -95,15 +95,15 @@ function MenuOption() {
   useEffect(() => {
     if (ordered.menu[processIdx].set.length) {
       if (progress.passConflict) {
-        setProgress({ value: 0.5, passConflict: true });
+        setProgress({ value: 0.5, passConflict: true, stage: "option" });
       } else {
-        setProgress({ value: 0.33, passConflict: false });
+        setProgress({ value: 0.33, passConflict: false, stage: "option" });
       }
     } else {
       if (progress.passConflict) {
-        setProgress({ value: 0.67, passConflict: true });
+        setProgress({ value: 0.67, passConflict: true, stage: "option" });
       } else {
-        setProgress({ value: 0.5, passConflict: false });
+        setProgress({ value: 0.5, passConflict: false, stage: "option" });
       }
     }
   }, []);

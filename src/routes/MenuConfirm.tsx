@@ -67,7 +67,7 @@ const PickupInfo = styled.div`
     justify-content: flex-start;
     align-items: center;
     & > span:last-child {
-      font-size: 30px;
+      font-size: 24px;
       font-weight: 700;
       margin-left: 10px;
     }
@@ -166,7 +166,7 @@ function MenuConfirm() {
 
   //progressBar 계산
   useEffect(() => {
-    setProgress({ value: 1, passConflict: false });
+    setProgress({ value: 1, passConflict: false, stage: "confirm" });
   }, []);
 
   //api 호출

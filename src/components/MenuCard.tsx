@@ -29,7 +29,7 @@ const Name = styled.h1`
   justify-content: flex-start;
   align-items: center;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   padding-left: 20px;
 `;
