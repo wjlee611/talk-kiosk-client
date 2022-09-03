@@ -58,6 +58,7 @@ const PickupInfo = styled.div`
   justify-content: space-between;
   background-color: white;
   padding: 20px;
+  padding-bottom: 16px;
   margin-bottom: 30px;
   border-radius: 10px;
   & > div {
@@ -112,12 +113,13 @@ const SetOptionTitle = styled.div`
   margin-bottom: 5px;
   & > span {
     width: 150px;
-    background: linear-gradient(90deg, #e9e9e9, #d4d4d4);
+    background: linear-gradient(90deg, #ffffff, #e4e4e4);
     color: black;
     display: flex;
     align-items: center;
     font-size: 16px;
     padding: 5px;
+    padding-bottom: 2px;
     margin-right: 10px;
     border-radius: 5px;
   }
@@ -141,10 +143,11 @@ const QtyTitle = styled.div`
   align-items: center;
   margin-top: 5px;
   & > span:first-child {
-    background: linear-gradient(90deg, #e9e9e9, #d4d4d4);
+    background: linear-gradient(90deg, #ffffff, #e4e4e4);
     color: black;
     border-radius: 5px;
     padding: 5px;
+    padding-bottom: 2px;
     margin-right: 10px;
   }
   & > span:last-child {

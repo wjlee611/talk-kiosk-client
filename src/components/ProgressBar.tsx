@@ -11,9 +11,8 @@ const Wrapper = styled.div`
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  pointer-events: none;
 `;
-const ScrollProgress = styled(motion.div)`
+const Progress = styled(motion.div)`
   width: 100%;
   height: 50px;
   position: fixed;
@@ -27,6 +26,7 @@ const ScrollProgress = styled(motion.div)`
 function ProgressBar() {
   const progress = useRecoilValue(progressBarLevel);
   const motionProgress = useMotionValue(0);
+  const motionProgress_Text = useMotionValue(1);
   const scaleX = useSpring(motionProgress, {
     stiffness: 300,
     damping: 30,
@@ -35,11 +35,12 @@ function ProgressBar() {
 
   useEffect(() => {
     motionProgress.set(progress.value);
+    motionProgress_Text.set(1 - progress.value);
   }, [progress]);
 
   return (
     <Wrapper>
-      <ScrollProgress style={{ scaleX }} />
+      <Progress style={{ scaleX }} />
     </Wrapper>
   );
 }
