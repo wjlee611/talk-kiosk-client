@@ -134,7 +134,10 @@ function Stt() {
   };
 
   return (
-    <Wrapper onClick={onClick} on={listening ? "true" : "false"}>
+    <Wrapper
+      // onClick={onClick}
+      on={listening ? "true" : "false"}
+    >
       <HintBox>
         {isTextProcessing
           ? "처리 중 입니다..."
