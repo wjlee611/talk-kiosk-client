@@ -47,11 +47,13 @@ export const progressBarLevel = atom<{
   value: number;
   passConflict: boolean;
   stage: "conflict" | "option" | "set" | "confirm";
+  progress: string;
 }>({
   key: "progressBarLevel",
   default: {
     value: 0,
     passConflict: false,
     stage: "conflict",
+    progress: "0/0",
   },
 });

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useSpring, motion, useMotionValue } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { orderedMenu, procIdx, progressBarLevel } from "../atoms";
+import { progressBarLevel } from "../atoms";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -36,10 +36,19 @@ const ProgressTextWrapper = styled.div`
     height: 50px;
   }
   & > span {
+    height: 50px;
+    display: flex;
+    align-items: center;
     color: #0f3460;
     font-size: 20px;
     font-weight: 700;
     margin-right: 10px;
+    transform: translateX(60px);
+  }
+  & > span:nth-child(2) {
+    width: 50px;
+    color: #1cd6ce;
+    padding-left: 10px;
   }
 `;
 
@@ -61,7 +70,7 @@ function ProgressBar() {
   const scaleX_Text = useSpring(motionProgress_Text, {
     stiffness: 300,
     damping: 30,
-    restDelta: 0.005,
+    restDelta: 0,
   });
 
   useEffect(() => {
@@ -94,6 +103,7 @@ function ProgressBar() {
             ? "세트 메뉴 선택"
             : "주문 확인"}
         </span>
+        <span>{progress.progress}</span>
         <motion.div style={{ width: scaleX_Text }} />
       </ProgressTextWrapper>
     </Wrapper>

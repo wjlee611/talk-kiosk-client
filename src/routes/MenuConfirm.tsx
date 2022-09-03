@@ -166,7 +166,12 @@ function MenuConfirm() {
 
   //progressBar 계산
   useEffect(() => {
-    setProgress({ value: 1, passConflict: false, stage: "confirm" });
+    setProgress({
+      value: 1,
+      passConflict: false,
+      stage: "confirm",
+      progress: "",
+    });
   }, []);
 
   //api 호출
