@@ -3,7 +3,13 @@ import { useHistory } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { IOrdered, postOrderList } from "../api";
-import { orderedMenu, resultCode, stText, textProcessing } from "../atoms";
+import {
+  orderedMenu,
+  progressBarLevel,
+  resultCode,
+  stText,
+  textProcessing,
+} from "../atoms";
 import menuData from "../menu-table.json";
 import { idToName } from "../utils";
 
@@ -106,8 +112,8 @@ const SetOptionTitle = styled.div`
   margin-bottom: 5px;
   & > span {
     width: 150px;
-    background: linear-gradient(90deg, #f65858, #e64848);
-    color: white;
+    background: linear-gradient(90deg, #e9e9e9, #d4d4d4);
+    color: black;
     display: flex;
     align-items: center;
     font-size: 16px;
@@ -135,8 +141,8 @@ const QtyTitle = styled.div`
   align-items: center;
   margin-top: 5px;
   & > span:first-child {
-    background: linear-gradient(90deg, #f65858, #e64848);
-    color: white;
+    background: linear-gradient(90deg, #e9e9e9, #d4d4d4);
+    color: black;
     border-radius: 5px;
     padding: 5px;
     margin-right: 10px;
@@ -152,7 +158,13 @@ function MenuConfirm() {
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const setTextProcessing = useSetRecoilState(textProcessing);
+  const setProgress = useSetRecoilState(progressBarLevel);
   const history = useHistory();
+
+  //progressBar 계산
+  useEffect(() => {
+    setProgress({ value: 1, passConflict: false });
+  }, []);
 
   //api 호출
   useEffect(() => {

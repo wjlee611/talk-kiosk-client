@@ -42,3 +42,11 @@ export const textProcessing = atom<boolean>({
   key: "textProcessing",
   default: false,
 });
+
+export const progressBarLevel = atom<{ value: number; passConflict: boolean }>({
+  key: "progressBarLevel",
+  default: {
+    value: 0,
+    passConflict: false,
+  },
+});

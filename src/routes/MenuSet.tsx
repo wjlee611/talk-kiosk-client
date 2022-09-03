@@ -7,6 +7,7 @@ import {
   orderedMenu,
   processing,
   procIdx,
+  progressBarLevel,
   resultCode,
   stText,
   textProcessing,
@@ -54,7 +55,17 @@ function MenuSet() {
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const setTextProcessing = useSetRecoilState(textProcessing);
+  const [progress, setProgress] = useRecoilState(progressBarLevel);
   const history = useHistory();
+
+  //progressBar 계산
+  useEffect(() => {
+    if (progress.passConflict) {
+      setProgress({ value: 0.75, passConflict: true });
+    } else {
+      setProgress({ value: 0.67, passConflict: false });
+    }
+  }, []);
 
   //api 호출
   useEffect(() => {
