@@ -126,6 +126,13 @@ function MenuOption() {
         });
       }
     }
+    if (200 < ordered.menu[processIdx].id[0]) {
+      setProcessIdx((prev) => prev + 1);
+      setIsProcessing(false);
+      setText("");
+      setCode(1001);
+      history.push("/processing");
+    }
   }, []);
 
   //api 호출

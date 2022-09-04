@@ -13,7 +13,7 @@ import {
   textProcessing,
 } from "../atoms";
 import { useHistory } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { postConflictSolve } from "../api";
 
 const Wrapper = styled.div`
@@ -75,6 +75,7 @@ function MenuList() {
   const setTextProcessing = useSetRecoilState(textProcessing);
   const setProgress = useSetRecoilState(progressBarLevel);
   const history = useHistory();
+  const [catValue, setCatValue] = useState([false, false, false]);
 
   //progressBar 계산
   useEffect(() => {
@@ -93,6 +94,12 @@ function MenuList() {
         progress: "1/3",
       });
     }
+    //category 표시여부 계산
+    ordered.menu[processIdx].id.map((i) => {
+      if (100 < i && i < 200) setCatValue((prev) => [true, prev[1], prev[2]]);
+      if (200 < i && i < 300) setCatValue((prev) => [prev[0], true, prev[2]]);
+      if (300 < i && i < 400) setCatValue((prev) => [prev[0], prev[1], true]);
+    });
   }, []);
 
   //api 호출
@@ -129,35 +136,45 @@ function MenuList() {
 
   return (
     <Wrapper className="scroll-area">
-      {[1, 2, 3].map((i) => (
-        <div key={i} className="block">
-          <Sticky
-            boundaryElement=".block"
-            scrollElement=".scroll-area"
-            positionRecheckInterval={1}
-            topOffset={-1}
-          >
-            <Category>
-              {i === 1 ? "메인 메뉴" : i === 2 ? "사이드 메뉴" : "음료수"}
-            </Category>
-          </Sticky>
-          <GridWrapper>
-            {ordered.menu[processIdx].id.map((id, idx) => {
-              if (i * 100 < Number(id) && Number(id) < (i + 1) * 100) {
-                return (
-                  <MenuCard
-                    key={idx}
-                    index={idx + 1}
-                    id={Number(id)}
-                    name={idToName(menuData, Number(id))}
-                  />
-                );
-              }
-              return null;
-            })}
-          </GridWrapper>
-        </div>
-      ))}
+      {catValue.map((value, index) => {
+        if (value)
+          return (
+            <div key={index} className="block">
+              <Sticky
+                boundaryElement=".block"
+                scrollElement=".scroll-area"
+                positionRecheckInterval={1}
+                topOffset={-1}
+              >
+                <Category>
+                  {index === 0
+                    ? "메인 메뉴"
+                    : index === 1
+                    ? "사이드 메뉴"
+                    : "음료수"}
+                </Category>
+              </Sticky>
+              <GridWrapper>
+                {ordered.menu[processIdx]?.id.map((id, idx) => {
+                  if (
+                    (index + 1) * 100 < Number(id) &&
+                    Number(id) < (index + 2) * 100
+                  ) {
+                    return (
+                      <MenuCard
+                        key={idx}
+                        index={idx + 1}
+                        id={Number(id)}
+                        name={idToName(menuData, Number(id))}
+                      />
+                    );
+                  }
+                  return null;
+                })}
+              </GridWrapper>
+            </div>
+          );
+      })}
     </Wrapper>
   );
 }
