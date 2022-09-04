@@ -5,7 +5,7 @@ import SpeechRecognition, {
 import styled from "styled-components";
 // import microphone from "../images/microphone.svg";
 // import caretDown from "../images/caret-down.svg";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { resultCode, stText, textProcessing } from "../atoms";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -90,15 +90,15 @@ const KB4 = styled(KeywordBox)`
   animation-delay: 0.75s;
 `;
 const WarningWrapper = styled(motion.div)`
-  width: 100vw;
+  width: 110vw;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
-  background: linear-gradient(#00000000, #00000099 20% 80%, #00000000);
+  background: linear-gradient(90deg, #f65858, #e64848);
   position: fixed;
   top: 0;
-  left: 0;
+  left: -5vw;
   z-index: 10;
   color: white;
   pointer-events: none;
@@ -113,7 +113,7 @@ const WarningWrapper = styled(motion.div)`
 `;
 
 function Stt() {
-  const [sttText, setSTText] = useRecoilState(stText);
+  const setSTText = useSetRecoilState(stText);
   const isTextProcessing = useRecoilValue(textProcessing);
   const code = useRecoilValue(resultCode);
   const [warningView, setWarningView] = useState(false);
@@ -121,11 +121,13 @@ function Stt() {
   //code 확인
   useEffect(() => {
     if (code === 1002 || code === 2007 || code === 2009) {
-      if (!isTextProcessing) {
-        setWarningView(true);
-        setTimeout(() => {
-          setWarningView(false);
-        }, 3000);
+      setWarningView(true);
+      const warnTo = setTimeout(() => {
+        setWarningView(false);
+      }, 3000);
+      if (isTextProcessing) {
+        setWarningView(false);
+        clearTimeout(warnTo);
       }
     }
   }, [code, isTextProcessing]);
@@ -197,17 +199,17 @@ function Stt() {
         {warningView ? (
           <WarningWrapper
             key="warning"
-            initial={{ opacity: 0, transform: "scaleY(0)" }}
+            initial={{ opacity: 0, transform: "scaleY(0) translateX(-5vw)" }}
             animate={{
               opacity: 1,
-              transform: "scaleY(1)",
+              transform: "scaleY(1) translateX(0vw)",
               transition: {
                 duration: 0.2,
               },
             }}
             exit={{
               opacity: 0,
-              transform: "scaleY(0)",
+              transform: "scaleY(0) translateX(5vw)",
               transition: {
                 duration: 0.2,
               },
