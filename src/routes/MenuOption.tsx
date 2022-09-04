@@ -3,7 +3,15 @@ import { useHistory } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { postOption } from "../api";
-import { orderedMenu, processing, procIdx, resultCode, stText } from "../atoms";
+import {
+  orderedMenu,
+  processing,
+  procIdx,
+  progressBarLevel,
+  resultCode,
+  stText,
+  textProcessing,
+} from "../atoms";
 import menuData from "../menu-table.json";
 import { idToName, makeMenu, makeOption } from "../utils";
 
@@ -79,14 +87,55 @@ function MenuOption() {
   const [option, setOption] = useState([false, false, false, false]);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const setTextProcessing = useSetRecoilState(textProcessing);
+  const [progress, setProgress] = useRecoilState(progressBarLevel);
   const history = useHistory();
+
+  //progressBar 계산
+  useEffect(() => {
+    if (ordered.menu[processIdx].set.length) {
+      if (progress.passConflict) {
+        setProgress({
+          value: 0.5,
+          passConflict: true,
+          stage: "option",
+          progress: "2/4",
+        });
+      } else {
+        setProgress({
+          value: 0.33,
+          passConflict: false,
+          stage: "option",
+          progress: "1/3",
+        });
+      }
+    } else {
+      if (progress.passConflict) {
+        setProgress({
+          value: 0.67,
+          passConflict: true,
+          stage: "option",
+          progress: "2/3",
+        });
+      } else {
+        setProgress({
+          value: 0.5,
+          passConflict: false,
+          stage: "option",
+          progress: "1/2",
+        });
+      }
+    }
+  }, []);
 
   //api 호출
   useEffect(() => {
     if (text) {
-      if (code === 2003 || code === 1002) {
+      setTextProcessing(true);
+      if (code === 2003 || code === 1002 || code === 1004) {
         //code 2003: 옵션변경
         postOption(text).then((res) => {
+          setTextProcessing(false);
           setCode(res.code);
           let tmpOption = [...option];
           res.option.map((i) => {
@@ -94,6 +143,8 @@ function MenuOption() {
           });
           setOption(tmpOption);
         });
+      } else {
+        setTextProcessing(false);
       }
     }
   }, [text]);

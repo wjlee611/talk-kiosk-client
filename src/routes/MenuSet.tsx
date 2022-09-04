@@ -3,7 +3,15 @@ import { useHistory } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { postSet } from "../api";
-import { orderedMenu, processing, procIdx, resultCode, stText } from "../atoms";
+import {
+  orderedMenu,
+  processing,
+  procIdx,
+  progressBarLevel,
+  resultCode,
+  stText,
+  textProcessing,
+} from "../atoms";
 import MenuCard from "../components/MenuCard";
 import menuData from "../menu-table.json";
 import { idToName, makeMenu } from "../utils";
@@ -46,17 +54,43 @@ function MenuSet() {
   );
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const setTextProcessing = useSetRecoilState(textProcessing);
+  const [progress, setProgress] = useRecoilState(progressBarLevel);
   const history = useHistory();
+
+  //progressBar 계산
+  useEffect(() => {
+    if (progress.passConflict) {
+      setProgress({
+        value: 0.75,
+        passConflict: false,
+        stage: "set",
+        progress: "3/4",
+      });
+    } else {
+      setProgress({
+        value: 0.67,
+        passConflict: false,
+        stage: "set",
+        progress: "2/3",
+      });
+    }
+  }, []);
 
   //api 호출
   useEffect(() => {
     if (text) {
+      setTextProcessing(true);
       if (code === 2005 || code === 1002 || code === 2007) {
         //code 2005: 세트변경
         postSet(text, [...option]).then((res) => {
+          setIsProcessing(false);
+          setTextProcessing(false);
           setCode(res.code);
           setOption(res.set);
         });
+      } else {
+        setTextProcessing(false);
       }
     }
   }, [text]);

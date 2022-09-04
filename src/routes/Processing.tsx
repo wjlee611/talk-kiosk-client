@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "../css/transition.css";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -11,6 +11,7 @@ import MenuList from "./MenuList";
 import MenuOption from "./MenuOption";
 import MenuSet from "./MenuSet";
 import MenuSpec from "./MenuSpec";
+import ProgressBar from "../components/ProgressBar";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -39,29 +40,30 @@ function Processing() {
         if (ordered.menu[processIdx].id.length > 1) {
           setCode(1003);
         } else {
-          setCode(2003);
+          setCode(1004);
         }
       }
-    } else {
-      setCode(2001);
+    } else if (code !== 1002) {
+      setCode(1005);
     }
   }, [ordered, isProcessing]);
 
   //code 확인
   useEffect(() => {
-    if (code === 1003) {
-      history.push("/processing/list");
-    } else if (code === 2003) {
-      history.push("/processing/option");
-    } else if (code === 2001) {
-      setCode(0);
-      history.push("/processing/confirm");
+    if (code !== 1002) {
+      if (code === 1003) {
+        history.push("/processing/list");
+      } else if (code === 1004) {
+        history.push("/processing/option");
+      } else if (code === 1005) {
+        history.push("/processing/confirm");
+      }
     }
   }, [code]);
 
   return (
     <Wrapper>
-      <div style={{ width: "360px", paddingLeft: "30px" }}>
+      <div style={{ width: "360px", height: "100%", marginTop: "50px" }}>
         <Stt />
       </div>
       <ComponentWrapper>
@@ -83,6 +85,7 @@ function Processing() {
                           height: "100%",
                           position: "fixed",
                           marginLeft: "360px",
+                          paddingTop: "50px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",
@@ -98,6 +101,7 @@ function Processing() {
                           height: "100%",
                           position: "fixed",
                           marginLeft: "360px",
+                          paddingTop: "50px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",
@@ -113,6 +117,7 @@ function Processing() {
                           height: "100%",
                           position: "fixed",
                           marginLeft: "360px",
+                          paddingTop: "50px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",
@@ -128,6 +133,7 @@ function Processing() {
                           height: "100%",
                           position: "fixed",
                           marginLeft: "360px",
+                          paddingTop: "50px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",
@@ -143,6 +149,7 @@ function Processing() {
                           height: "100%",
                           position: "fixed",
                           marginLeft: "360px",
+                          paddingTop: "50px",
                           left: 0,
                           top: 0,
                           overflow: "hidden",
@@ -158,6 +165,7 @@ function Processing() {
           }}
         ></Route>
       </ComponentWrapper>
+      <ProgressBar />
     </Wrapper>
   );
 }

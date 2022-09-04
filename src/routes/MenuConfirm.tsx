@@ -1,9 +1,15 @@
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { IOrdered, postOrderList } from "../api";
-import { orderedMenu, resultCode, stText } from "../atoms";
+import {
+  orderedMenu,
+  progressBarLevel,
+  resultCode,
+  stText,
+  textProcessing,
+} from "../atoms";
 import menuData from "../menu-table.json";
 import { idToName } from "../utils";
 
@@ -52,6 +58,7 @@ const PickupInfo = styled.div`
   justify-content: space-between;
   background-color: white;
   padding: 20px;
+  padding-bottom: 16px;
   margin-bottom: 30px;
   border-radius: 10px;
   & > div {
@@ -60,7 +67,7 @@ const PickupInfo = styled.div`
     justify-content: flex-start;
     align-items: center;
     & > span:last-child {
-      font-size: 30px;
+      font-size: 24px;
       font-weight: 700;
       margin-left: 10px;
     }
@@ -106,12 +113,13 @@ const SetOptionTitle = styled.div`
   margin-bottom: 5px;
   & > span {
     width: 150px;
-    background: linear-gradient(90deg, #f65858, #e64848);
-    color: white;
+    background: linear-gradient(90deg, #ffffff, #e4e4e4);
+    color: black;
     display: flex;
     align-items: center;
     font-size: 16px;
     padding: 5px;
+    padding-bottom: 2px;
     margin-right: 10px;
     border-radius: 5px;
   }
@@ -135,10 +143,11 @@ const QtyTitle = styled.div`
   align-items: center;
   margin-top: 5px;
   & > span:first-child {
-    background: linear-gradient(90deg, #f65858, #e64848);
-    color: white;
+    background: linear-gradient(90deg, #ffffff, #e4e4e4);
+    color: black;
     border-radius: 5px;
     padding: 5px;
+    padding-bottom: 2px;
     margin-right: 10px;
   }
   & > span:last-child {
@@ -151,13 +160,27 @@ function MenuConfirm() {
   const [ordered, setOrdered] = useRecoilState(orderedMenu);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
+  const setTextProcessing = useSetRecoilState(textProcessing);
+  const setProgress = useSetRecoilState(progressBarLevel);
   const history = useHistory();
+
+  //progressBar 계산
+  useEffect(() => {
+    setProgress({
+      value: 1,
+      passConflict: false,
+      stage: "confirm",
+      progress: "",
+    });
+  }, []);
 
   //api 호출
   useEffect(() => {
     if (text) {
+      setTextProcessing(true);
       postOrderList(text).then((res) => {
         setCode(res.code);
+        setTextProcessing(false);
         let tmpOrderedMenu: IOrdered["menu"] = [];
         res.order_list.map((i) => {
           tmpOrderedMenu.push({
