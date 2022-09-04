@@ -99,7 +99,7 @@ function MenuList() {
   useEffect(() => {
     if (text) {
       setTextProcessing(true);
-      if (code === 1003 || code === 1002) {
+      if (code === 1003 || code === 1002 || code === 2009) {
         //code 1003: 충돌메뉴 선택 (local)
         postConflictSolve(text, ordered.menu[processIdx].id).then((res) => {
           setTextProcessing(false);
@@ -117,6 +117,8 @@ function MenuList() {
             setCode(2003);
             setText("");
             history.push("/processing/option");
+          } else {
+            setCode(res.code);
           }
         });
       } else {

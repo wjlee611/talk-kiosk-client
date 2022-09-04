@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import styled from "styled-components";
 // import microphone from "../images/microphone.svg";
 // import caretDown from "../images/caret-down.svg";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { stText, textProcessing } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { resultCode, stText, textProcessing } from "../atoms";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Wrapper = styled.div<{ on: "true" | "false" }>`
   width: 100%;
@@ -88,10 +89,46 @@ const KB4 = styled(KeywordBox)`
   margin-right: 20%;
   animation-delay: 0.75s;
 `;
+const WarningWrapper = styled(motion.div)`
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  background: linear-gradient(#00000000, #00000099 20% 80%, #00000000);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  color: white;
+  pointer-events: none;
+  & > span {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+  }
+`;
 
 function Stt() {
-  const setSTText = useSetRecoilState(stText);
+  const [sttText, setSTText] = useRecoilState(stText);
   const isTextProcessing = useRecoilValue(textProcessing);
+  const code = useRecoilValue(resultCode);
+  const [warningView, setWarningView] = useState(false);
+
+  //code 확인
+  useEffect(() => {
+    if (code === 1002 || code === 2007 || code === 2009) {
+      if (!isTextProcessing) {
+        setWarningView(true);
+        setTimeout(() => {
+          setWarningView(false);
+        }, 3000);
+      }
+    }
+  }, [code, isTextProcessing]);
 
   const {
     transcript,
@@ -156,6 +193,38 @@ function Stt() {
         <KB3>keyword 3</KB3>
         <KB4>keyword 4</KB4>
       </KeywordWrapper>
+      <AnimatePresence>
+        {warningView ? (
+          <WarningWrapper
+            key="warning"
+            initial={{ opacity: 0, transform: "scaleY(0)" }}
+            animate={{
+              opacity: 1,
+              transform: "scaleY(1)",
+              transition: {
+                duration: 0.2,
+              },
+            }}
+            exit={{
+              opacity: 0,
+              transform: "scaleY(0)",
+              transition: {
+                duration: 0.2,
+              },
+            }}
+          >
+            <span>
+              {code === 1002
+                ? "무슨 말씀이신지 이해하지 못 했어요. 다시 시도해주세요!"
+                : code === 2007
+                ? "사이드 메뉴, 음료수 각각 1개씩 선택하실 수 있어요. 다시 시도해주세요!"
+                : code === 2009
+                ? "해당 메뉴는 이 리스트에 없어요. 화면에 보이는 메뉴 중에서 하나를 골라주세요!"
+                : ""}
+            </span>
+          </WarningWrapper>
+        ) : null}
+      </AnimatePresence>
     </Wrapper>
   );
 }

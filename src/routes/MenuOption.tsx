@@ -132,7 +132,7 @@ function MenuOption() {
   useEffect(() => {
     if (text) {
       setTextProcessing(true);
-      if (code === 2003 || code === 1002) {
+      if (code === 2003 || code === 1002 || code === 1004) {
         //code 2003: 옵션변경
         postOption(text).then((res) => {
           setTextProcessing(false);

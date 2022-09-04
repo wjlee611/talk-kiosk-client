@@ -63,7 +63,7 @@ function MenuSet() {
     if (progress.passConflict) {
       setProgress({
         value: 0.75,
-        passConflict: true,
+        passConflict: false,
         stage: "set",
         progress: "3/4",
       });
@@ -85,6 +85,7 @@ function MenuSet() {
         //code 2005: 세트변경
         postSet(text, [...option]).then((res) => {
           setIsProcessing(false);
+          setTextProcessing(false);
           setCode(res.code);
           setOption(res.set);
         });

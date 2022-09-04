@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "../css/transition.css";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -40,23 +40,24 @@ function Processing() {
         if (ordered.menu[processIdx].id.length > 1) {
           setCode(1003);
         } else {
-          setCode(2003);
+          setCode(1004);
         }
       }
-    } else {
-      setCode(2001);
+    } else if (code !== 1002) {
+      setCode(1005);
     }
   }, [ordered, isProcessing]);
 
   //code 확인
   useEffect(() => {
-    if (code === 1003) {
-      history.push("/processing/list");
-    } else if (code === 2003) {
-      history.push("/processing/option");
-    } else if (code === 2001) {
-      setCode(0);
-      history.push("/processing/confirm");
+    if (code !== 1002) {
+      if (code === 1003) {
+        history.push("/processing/list");
+      } else if (code === 1004) {
+        history.push("/processing/option");
+      } else if (code === 1005) {
+        history.push("/processing/confirm");
+      }
     }
   }, [code]);
 
