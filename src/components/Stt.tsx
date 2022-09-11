@@ -6,8 +6,17 @@ import styled from "styled-components";
 // import microphone from "../images/microphone.svg";
 // import caretDown from "../images/caret-down.svg";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { resultCode, stText, textProcessing } from "../atoms";
+import {
+  orderedMenu,
+  procIdx,
+  progressBarLevel,
+  resultCode,
+  stText,
+  textProcessing,
+} from "../atoms";
 import { AnimatePresence, motion } from "framer-motion";
+import menuData from "../menu-table.json";
+import { idToName } from "../utils";
 
 const Wrapper = styled.div<{ on: "true" | "false" }>`
   width: 100%;
@@ -117,6 +126,9 @@ function Stt() {
   const isTextProcessing = useRecoilValue(textProcessing);
   const code = useRecoilValue(resultCode);
   const [warningView, setWarningView] = useState(false);
+  const stage = useRecoilValue(progressBarLevel).stage;
+  const ordered = useRecoilValue(orderedMenu);
+  const processIdx = useRecoilValue(procIdx);
 
   //code 확인
   useEffect(() => {
@@ -189,11 +201,61 @@ function Stt() {
       <form onSubmit={onSubmit}>
         <input type="text" style={{ width: "300px" }}></input>
       </form>
-      <KeywordWrapper listening={listening ? "true" : "false"}>
-        <KB1>keyword 1</KB1>
-        <KB2>keyword 2</KB2>
-        <KB3>keyword 3</KB3>
-        <KB4>keyword 4</KB4>
+      <KeywordWrapper key={stage} listening={listening ? "true" : "false"}>
+        <KB1>
+          {stage === "main"
+            ? "불고기버거 하나 주세요"
+            : stage === "conflict"
+            ? idToName(
+                menuData,
+                ordered.menu[processIdx]?.id[0]
+                  ? ordered.menu[processIdx].id[0]
+                  : 0
+              )
+            : stage === "option"
+            ? "피클 빼줘"
+            : stage === "set"
+            ? "제로 콜라로 바꿔줘"
+            : "불고기버거 하나 주세요"}
+        </KB1>
+        <KB2>
+          {stage === "main"
+            ? "치즈버거 세트 두개 주세요"
+            : stage === "conflict"
+            ? "1번"
+            : stage === "option"
+            ? "양상추 빼줘"
+            : stage === "set"
+            ? "치즈스틱으로 바꿔줘"
+            : "치즈버거 세트 두개 주세요"}
+        </KB2>
+        <KB3>
+          {stage === "main"
+            ? "빅맥 라지세트 세개 주세요"
+            : stage === "conflict"
+            ? idToName(
+                menuData,
+                ordered.menu[processIdx]?.id[1]
+                  ? ordered.menu[processIdx].id[1]
+                  : 0
+              )
+            : stage === "option"
+            ? "토마토 빼고 패티 추가해줘"
+            : stage === "set"
+            ? "해쉬 브라운이랑 환타"
+            : "빅맥 라지세트 세개 주세요"}
+        </KB3>
+        <KB4>
+          {stage === "main"
+            ? "감자튀김 네개 주세요"
+            : stage === "conflict"
+            ? "2번"
+            : stage === "option"
+            ? "다음"
+            : stage === "set"
+            ? "다음"
+            : "다음"}
+        </KB4>
       </KeywordWrapper>
       <AnimatePresence>
         {warningView ? (

@@ -79,7 +79,14 @@ function MenuList() {
 
   //progressBar 계산
   useEffect(() => {
-    if (ordered.menu[processIdx].set.length) {
+    if (200 < ordered.menu[processIdx]?.id[0]) {
+      setProgress({
+        value: 0.5,
+        passConflict: true,
+        stage: "conflict",
+        progress: "1/2",
+      });
+    } else if (ordered.menu[processIdx].set.length) {
       setProgress({
         value: 0.25,
         passConflict: true,

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -11,7 +11,7 @@ import {
   textProcessing,
 } from "../atoms";
 import menuData from "../menu-table.json";
-import { idToName } from "../utils";
+import { idToName, calcCost } from "../utils";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -62,11 +62,22 @@ const PickupInfo = styled.div`
   margin-bottom: 30px;
   border-radius: 10px;
   & > div {
-    width: 100%;
     display: flex;
-    justify-content: flex-start;
     align-items: center;
-    & > span:last-child {
+    &:first-child {
+      justify-content: flex-start;
+    }
+    &:nth-child(2) {
+      justify-content: center;
+    }
+    &:last-child {
+      justify-content: flex-end;
+      & > span:nth-child(2) {
+        margin-right: 3px;
+        margin-bottom: 3px;
+      }
+    }
+    & > span:nth-child(2) {
       font-size: 24px;
       font-weight: 700;
       margin-left: 10px;
@@ -97,6 +108,7 @@ const IndexWrapper = styled.div`
   }
 `;
 const MenuInfoWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 20px 0;
@@ -155,6 +167,28 @@ const QtyTitle = styled.div`
     font-weight: 700;
   }
 `;
+const CostWrapper = styled.div`
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  background: linear-gradient(#f65858, #e64848);
+  color: white;
+  font-size: 16px;
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+    & > span:first-child {
+      font-size: 20px;
+      font-weight: 700;
+      padding-bottom: 5px;
+    }
+  }
+`;
 
 function MenuConfirm() {
   const [ordered, setOrdered] = useRecoilState(orderedMenu);
@@ -163,15 +197,28 @@ function MenuConfirm() {
   const setTextProcessing = useSetRecoilState(textProcessing);
   const setProgress = useSetRecoilState(progressBarLevel);
   const history = useHistory();
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  //progressBar 계산
   useEffect(() => {
+    //progressBar 계산
     setProgress({
       value: 1,
       passConflict: false,
       stage: "confirm",
       progress: "",
     });
+
+    //메뉴 가격 총 합 계산
+    let totalCost = 0;
+    ordered.menu.map((item, idx) => {
+      totalCost += calcCost(ordered.menu, idx);
+    });
+    setOrdered((prev) => ({
+      price: totalCost,
+      order: prev.order,
+      takeout: prev.takeout,
+      menu: prev.menu,
+    }));
   }, []);
 
   //api 호출
@@ -226,6 +273,15 @@ function MenuConfirm() {
             <span>식사 위치</span>
             <span>{ordered.takeout ? "포장" : "매장 내 식사"}</span>
           </div>
+          <div>
+            <span>총</span>
+            <span>
+              {ordered.price
+                .toString()
+                .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+            </span>
+            <span>원</span>
+          </div>
         </PickupInfo>
         {ordered.menu.map((item, idx) => (
           <MenuWrapper key={idx}>
@@ -262,6 +318,17 @@ function MenuConfirm() {
                 <span>{item.qty}</span>
               </QtyTitle>
             </MenuInfoWrapper>
+            <CostWrapper>
+              <span>가격</span>
+              <div>
+                <span>
+                  {calcCost(ordered.menu, idx)
+                    .toString()
+                    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                </span>
+                <span>원</span>
+              </div>
+            </CostWrapper>
           </MenuWrapper>
         ))}
       </ScrollWrapper>
