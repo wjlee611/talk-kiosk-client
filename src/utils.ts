@@ -1,4 +1,5 @@
 import { IOrdered } from "./api";
+import priceJsonData from "./price-table.json";
 
 export function idToName(source: any, id: number) {
   return source[id];
@@ -54,4 +55,23 @@ export function makeOption(source: boolean[]) {
     if (i) resultOption.push(idx + 1001);
   });
   return resultOption;
+}
+
+export function calcCost(menu: IOrdered["menu"], idx: number) {
+  const priceData: any = priceJsonData;
+  // 계산
+  let price = 0;
+  price += priceData[menu[idx].id[0]];
+  menu[idx].option.map((i) => {
+    price += priceData[i];
+  });
+  menu[idx].set.map((i) => {
+    price += priceData[i];
+  });
+  if (menu[idx].set.length) {
+    price -= 1200;
+  }
+  price *= menu[idx].qty;
+
+  return price;
 }
