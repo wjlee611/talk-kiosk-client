@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/wjlee611/talk-kiosk-client/static/js/main.bf7a15ef.js",
-    "index.html": "/wjlee611/talk-kiosk-client/index.html",
-    "main.bf7a15ef.js.map": "/wjlee611/talk-kiosk-client/static/js/main.bf7a15ef.js.map"
+    "main.js": "/talk-kiosk-client/static/js/main.2d33874f.js",
+    "index.html": "/talk-kiosk-client/index.html",
+    "main.2d33874f.js.map": "/talk-kiosk-client/static/js/main.2d33874f.js.map"
   },
   "entrypoints": [
-    "static/js/main.bf7a15ef.js"
+    "static/js/main.2d33874f.js"
   ]
 }
