@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Fantastic5-Team/talk-kiosk-client/static/js/main.92ba7efe.js",
-    "index.html": "/Fantastic5-Team/talk-kiosk-client/index.html",
-    "main.92ba7efe.js.map": "/Fantastic5-Team/talk-kiosk-client/static/js/main.92ba7efe.js.map"
+    "main.js": "/wjlee611/talk-kiosk-client/static/js/main.bf7a15ef.js",
+    "index.html": "/wjlee611/talk-kiosk-client/index.html",
+    "main.bf7a15ef.js.map": "/wjlee611/talk-kiosk-client/static/js/main.bf7a15ef.js.map"
   },
   "entrypoints": [
-    "static/js/main.92ba7efe.js"
+    "static/js/main.bf7a15ef.js"
   ]
 }
