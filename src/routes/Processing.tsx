@@ -50,7 +50,7 @@ function Processing() {
 
   //code 확인
   useEffect(() => {
-    if (code !== 1002) {
+    if (code !== 1002 && isProcessing !== "DONE") {
       if (code === 1003) {
         history.push("/processing/list");
       } else if (code === 1004) {

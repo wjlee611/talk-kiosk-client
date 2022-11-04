@@ -28,7 +28,7 @@ export const resultCode = atom<number | undefined>({
   default: 0,
 });
 
-export const processing = atom<boolean>({
+export const processing = atom<boolean | "DONE">({
   key: "processing",
   default: false,
 });

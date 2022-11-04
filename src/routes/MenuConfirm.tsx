@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { IOrdered, postOrderList } from "../api";
 import {
   orderedMenu,
+  processing,
   progressBarLevel,
   resultCode,
   stText,
@@ -196,6 +197,7 @@ function MenuConfirm() {
   const [code, setCode] = useRecoilState(resultCode);
   const setTextProcessing = useSetRecoilState(textProcessing);
   const setProgress = useSetRecoilState(progressBarLevel);
+  const setIsProcessing = useSetRecoilState(processing);
   const history = useHistory();
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -256,7 +258,8 @@ function MenuConfirm() {
     } else if (code === 2001) {
       //code 2001: 주문완료
       setText("");
-      console.log("final result:", ordered);
+      setIsProcessing("DONE");
+      history.push("/postOrder");
     }
   }, [code]);
 

@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ConsoleHome from "./routes/ConsoleHome";
 import KioskHome from "./routes/KioskHome";
+import OrderProcess from "./routes/OrderProcess";
 import Processing from "./routes/Processing";
 
 function Router() {
@@ -15,6 +16,9 @@ function Router() {
         </Route>
         <Route path="/processing">
           <Processing />
+        </Route>
+        <Route path="/postOrder">
+          <OrderProcess />
         </Route>
       </Switch>
     </BrowserRouter>
