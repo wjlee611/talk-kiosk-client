@@ -72,6 +72,7 @@ const MenuWrapper = styled.div<{ idx: number }>`
     color: black;
     display: flex;
     padding-top: 3px;
+    margin-bottom: 5px;
     font-size: 20px;
     font-weight: 700;
   }
@@ -96,8 +97,7 @@ const MenuChildWrapper = styled.div`
     align-items: center;
     margin-bottom: 3px;
     margin-left: 0;
-    padding-left: 10px;
-    padding-top: 5px;
+    padding: 5px 10px;
     font-size: 16px;
     font-weight: 400;
   }
@@ -137,6 +137,18 @@ function OrderCard({ data, status }: IOrderCard) {
         {data.menu.map((menu, idx) => (
           <MenuWrapper key={idx} idx={idx}>
             <span>{idToName(menuData, menu.id[0])}</span>
+            <MenuChildWrapper>
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  backgroundColor: "#c5fcda",
+                }}
+              >
+                <span>Quantity</span>
+                <span style={{ fontWeight: 700 }}>{menu.qty}</span>
+              </span>
+            </MenuChildWrapper>
             {menu.id[0] < 200 ? (
               <>
                 {menu.option?.length ? (

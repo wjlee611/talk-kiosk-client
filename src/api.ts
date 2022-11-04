@@ -30,7 +30,8 @@ interface IGetOrder {
   };
 }
 
-export function postOrdered(data: IOrdered) {
+export async function postOrdered(data: IOrdered): Promise<boolean> {
+  let result = false;
   try {
     // Client-side Validation
     if (
@@ -52,7 +53,7 @@ export function postOrdered(data: IOrdered) {
             throw new Error(`menu[] must have only object types.`);
           } else {
             // 메뉴 배열의 아이템 객체의 id키의 존재여부와 값이 number 타입인지 검사
-            if (item?.id === undefined || typeof item.id !== "number") {
+            if (item?.id.length !== 1 || typeof item.id[0] !== "number") {
               throw new Error(`menu must have "id" key and number value.`);
             }
           }
@@ -76,14 +77,20 @@ export function postOrdered(data: IOrdered) {
     const json = {
       data: data,
     };
-    axios
-      .post("https://talking-kiosk.shop/app/ordered", JSON.stringify(json), {
+    const res = await axios.post(
+      "https://talking-kiosk.shop/app/ordered",
+      JSON.stringify(json),
+      {
         headers: header,
-      })
-      .then((res) => console.log(res));
+      }
+    );
+    console.log(res);
+    result = res.data.code === 1000;
   } catch (err) {
     console.log(err);
   }
+
+  return result;
 }
 
 export async function GetOrdered(status?: string): Promise<IOrdered[]> {
