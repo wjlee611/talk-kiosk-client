@@ -151,6 +151,11 @@ export interface IPostSet {
   code: number;
 }
 
+export interface IPostTakeout {
+  isTakeout: boolean;
+  code: number;
+}
+
 export async function postOrderList(text: string): Promise<IPostOrderList> {
   let result: IPostOrderList = { order_list: [], code: 0 };
   try {
@@ -230,6 +235,27 @@ export async function postSet(text: string, set: number[]): Promise<IPostSet> {
       }
     );
     result.set = data.data.set;
+    result.code = data.data.code;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return result;
+  }
+}
+
+export async function postTakeout(text: string): Promise<IPostTakeout> {
+  let result: IPostTakeout = { isTakeout: true, code: 0 };
+  try {
+    let postJson: any = { text: text };
+
+    const data = await axios.post<IPostTakeout>(
+      "http://127.0.0.1:8000/takeout",
+      JSON.stringify(postJson),
+      {
+        headers: header,
+      }
+    );
+    result.isTakeout = data.data.isTakeout;
     result.code = data.data.code;
   } catch (err) {
     console.log(err);

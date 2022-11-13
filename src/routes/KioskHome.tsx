@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { IOrdered, postOrderList } from "../api";
+import { postTakeout } from "../api";
 import { orderedMenu, resultCode, stText, textProcessing } from "../atoms";
 import Stt from "../components/Stt";
 
@@ -14,6 +14,32 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+`;
+const AskText = styled.span`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #00000090;
+  position: absolute;
+  top: 0;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+
+  animation: textani 1s cubic-bezier(0.55, 0.1, 0.15, 1) forwards;
+  @keyframes textani {
+    50% {
+      height: 100vh;
+      background-color: #00000090;
+    }
+    100% {
+      height: 50px;
+      background-color: #00000040;
+    }
+  }
 `;
 
 function KioskHome() {
@@ -27,23 +53,14 @@ function KioskHome() {
   useEffect(() => {
     if (text && code !== 2001) {
       setTextProcessing(true);
-      postOrderList(text).then((res) => {
-        setCode(res.code);
+      postTakeout(text).then((res) => {
         setTextProcessing(false);
-        let tmpOrderedMenu: IOrdered["menu"] = [];
-        res.order_list.map((i) => {
-          tmpOrderedMenu.push({
-            id: i.menu,
-            option: i.option,
-            set: i.set,
-            qty: i.qty,
-          });
-        });
+        setCode(res.code);
         setOrdered((prev) => ({
           order: prev.order,
           price: prev.price,
-          takeout: prev.takeout,
-          menu: [...prev.menu, ...tmpOrderedMenu],
+          takeout: res.isTakeout,
+          menu: prev.menu,
         }));
       });
     }
@@ -51,8 +68,7 @@ function KioskHome() {
 
   //code 확인
   useEffect(() => {
-    if (code === 1001 || code === 2001) {
-      //code 1001: 성공, 2001: 주문완료
+    if (code === 1001) {
       setText("");
       history.push("/processing");
     }
@@ -61,6 +77,7 @@ function KioskHome() {
   return (
     <Wrapper>
       <Stt />
+      <AskText>매장에서 드시고 가시나요?</AskText>
     </Wrapper>
   );
 }
