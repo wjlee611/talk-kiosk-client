@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { postTakeout } from "../api";
 import { orderedMenu, resultCode, stText, textProcessing } from "../atoms";
 import Stt from "../components/Stt";
+import kioskStart from "../audio/kiosk_start.mp3";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -48,6 +49,11 @@ function KioskHome() {
   const [code, setCode] = useRecoilState(resultCode);
   const setTextProcessing = useSetRecoilState(textProcessing);
   const history = useHistory();
+
+  // const audio = new Audio(kioskStart);
+  // useEffect(() => {
+  //   audio.play();
+  // }, []);
 
   //api 호출
   useEffect(() => {
