@@ -204,7 +204,7 @@ function Stt() {
       <KeywordWrapper key={stage} listening={listening ? "true" : "false"}>
         <KB1>
           {stage === "main"
-            ? "불고기버거 하나 주세요"
+            ? "네"
             : stage === "conflict"
             ? idToName(
                 menuData,
@@ -220,7 +220,7 @@ function Stt() {
         </KB1>
         <KB2>
           {stage === "main"
-            ? "치즈버거 세트 두개 주세요"
+            ? "먹고 갈게요"
             : stage === "conflict"
             ? "1번"
             : stage === "option"
@@ -231,7 +231,7 @@ function Stt() {
         </KB2>
         <KB3>
           {stage === "main"
-            ? "빅맥 라지세트 세개 주세요"
+            ? "아니오"
             : stage === "conflict"
             ? idToName(
                 menuData,
@@ -247,7 +247,7 @@ function Stt() {
         </KB3>
         <KB4>
           {stage === "main"
-            ? "감자튀김 네개 주세요"
+            ? "테이크 아웃 할게요"
             : stage === "conflict"
             ? "2번"
             : stage === "option"
