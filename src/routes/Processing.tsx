@@ -46,6 +46,7 @@ function Processing() {
     } else if (code !== 1002) {
       setCode(1005);
     }
+    // eslint-disable-next-line
   }, [ordered, isProcessing]);
 
   //code 확인
@@ -59,6 +60,7 @@ function Processing() {
         history.push("/processing/confirm");
       }
     }
+    // eslint-disable-next-line
   }, [code]);
 
   return (

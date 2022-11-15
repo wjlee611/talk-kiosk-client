@@ -12,7 +12,7 @@ export function makeMenu(
   value: number[]
 ) {
   let resultMenu: IOrdered["menu"] = [];
-  prevMenu.map((i, idx) => {
+  prevMenu.forEach((i, idx) => {
     if (idx === index) {
       if (key === "ID") {
         resultMenu.push({
@@ -51,7 +51,7 @@ export function makeMenu(
 
 export function makeOption(source: boolean[]) {
   let resultOption: number[] = [];
-  source.map((i, idx) => {
+  source.forEach((i, idx) => {
     if (i) resultOption.push(idx + 1001);
   });
   return resultOption;
@@ -62,10 +62,10 @@ export function calcCost(menu: IOrdered["menu"], idx: number) {
   // 계산
   let price = 0;
   price += priceData[menu[idx].id[0]];
-  menu[idx].option.map((i) => {
+  menu[idx].option.forEach((i) => {
     price += priceData[i];
   });
-  menu[idx].set.map((i) => {
+  menu[idx].set.forEach((i) => {
     price += priceData[i];
   });
   if (menu[idx].set.length) {

@@ -70,6 +70,7 @@ function KioskHome() {
         }));
       });
     }
+    // eslint-disable-next-line
   }, [text]);
 
   //code 확인
@@ -78,6 +79,7 @@ function KioskHome() {
       setText("");
       history.push("/processing");
     }
+    // eslint-disable-next-line
   }, [code]);
 
   return (

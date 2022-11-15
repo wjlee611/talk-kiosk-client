@@ -75,6 +75,7 @@ function MenuSet() {
         progress: "2/3",
       });
     }
+    // eslint-disable-next-line
   }, []);
 
   //api 호출
@@ -93,6 +94,7 @@ function MenuSet() {
         setTextProcessing(false);
       }
     }
+    // eslint-disable-next-line
   }, [text]);
 
   //code 확인
@@ -117,6 +119,7 @@ function MenuSet() {
       //code 2007: 세트충돌
       //TODO: 세트 충돌 알려주기 ex. 콜라, 사이다
     }
+    // eslint-disable-next-line
   }, [code]);
 
   return (

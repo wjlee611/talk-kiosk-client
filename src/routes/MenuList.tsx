@@ -102,11 +102,12 @@ function MenuList() {
       });
     }
     //category 표시여부 계산
-    ordered.menu[processIdx].id.map((i) => {
+    ordered.menu[processIdx].id.forEach((i) => {
       if (100 < i && i < 200) setCatValue((prev) => [true, prev[1], prev[2]]);
       if (200 < i && i < 300) setCatValue((prev) => [prev[0], true, prev[2]]);
       if (300 < i && i < 400) setCatValue((prev) => [prev[0], prev[1], true]);
     });
+    // eslint-disable-next-line
   }, []);
 
   //api 호출
@@ -139,10 +140,12 @@ function MenuList() {
         setTextProcessing(false);
       }
     }
+    // eslint-disable-next-line
   }, [text]);
 
   return (
     <Wrapper className="scroll-area">
+      {/* eslint-disable-next-line */}
       {catValue.map((value, index) => {
         if (value)
           return (

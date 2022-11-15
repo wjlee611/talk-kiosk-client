@@ -158,6 +158,7 @@ function Stt() {
       setSTText(finalTranscript);
       // console.log("Got final result:", finalTranscript);
     }
+    // eslint-disable-next-line
   }, [interimTranscript, finalTranscript]);
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {

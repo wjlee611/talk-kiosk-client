@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -199,7 +199,7 @@ function MenuConfirm() {
   const setProgress = useSetRecoilState(progressBarLevel);
   const setIsProcessing = useSetRecoilState(processing);
   const history = useHistory();
-  const [totalPrice, setTotalPrice] = useState(0);
+  // const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     //progressBar 계산
@@ -212,7 +212,7 @@ function MenuConfirm() {
 
     //메뉴 가격 총 합 계산
     let totalCost = 0;
-    ordered.menu.map((item, idx) => {
+    ordered.menu.forEach((item, idx) => {
       totalCost += calcCost(ordered.menu, idx);
     });
     setOrdered((prev) => ({
@@ -221,6 +221,7 @@ function MenuConfirm() {
       takeout: prev.takeout,
       menu: prev.menu,
     }));
+    // eslint-disable-next-line
   }, []);
 
   //api 호출
@@ -231,7 +232,7 @@ function MenuConfirm() {
         setCode(res.code);
         setTextProcessing(false);
         let tmpOrderedMenu: IOrdered["menu"] = [];
-        res.order_list.map((i) => {
+        res.order_list.forEach((i) => {
           tmpOrderedMenu.push({
             id: i.menu,
             option: i.option,
@@ -247,6 +248,7 @@ function MenuConfirm() {
         }));
       });
     }
+    // eslint-disable-next-line
   }, [text]);
 
   //code 확인
@@ -261,6 +263,7 @@ function MenuConfirm() {
       setIsProcessing("DONE");
       history.push("/postOrder");
     }
+    // eslint-disable-next-line
   }, [code]);
 
   return (

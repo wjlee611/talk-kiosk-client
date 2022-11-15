@@ -88,6 +88,7 @@ function ProgressBar() {
   useEffect(() => {
     motionProgress.set(progress.value);
     motionProgress_Text.set((1 - progress.value) * windowSize.innerWidth);
+    // eslint-disable-next-line
   }, [progress, windowSize.innerWidth]);
 
   return (

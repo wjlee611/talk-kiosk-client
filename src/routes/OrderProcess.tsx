@@ -95,6 +95,7 @@ function OrderProcess() {
     return () => {
       clearInterval(myInterval);
     };
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -119,6 +120,7 @@ function OrderProcess() {
     } else {
       setTimer(0);
     }
+    // eslint-disable-next-line
   }, [timer]);
 
   return (
