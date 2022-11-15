@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { postTakeout } from "../api";
 import { orderedMenu, resultCode, stText, textProcessing } from "../atoms";
 import Stt from "../components/Stt";
+import kioskStart from "../audio/kiosk_start.mp3";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -49,6 +50,11 @@ function KioskHome() {
   const setTextProcessing = useSetRecoilState(textProcessing);
   const history = useHistory();
 
+  // const audio = new Audio(kioskStart);
+  // useEffect(() => {
+  //   audio.play();
+  // }, []);
+
   //api 호출
   useEffect(() => {
     if (text && code !== 2001) {
@@ -64,6 +70,7 @@ function KioskHome() {
         }));
       });
     }
+    // eslint-disable-next-line
   }, [text]);
 
   //code 확인
@@ -72,6 +79,7 @@ function KioskHome() {
       setText("");
       history.push("/processing");
     }
+    // eslint-disable-next-line
   }, [code]);
 
   return (

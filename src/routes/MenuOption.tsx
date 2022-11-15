@@ -133,6 +133,7 @@ function MenuOption() {
       setCode(1001);
       history.push("/processing");
     }
+    // eslint-disable-next-line
   }, []);
 
   //api 호출
@@ -145,7 +146,7 @@ function MenuOption() {
           setTextProcessing(false);
           setCode(res.code);
           let tmpOption = [...option];
-          res.option.map((i) => {
+          res.option.forEach((i) => {
             tmpOption[i - 2000 - 1] = !tmpOption[i - 2000 - 1];
           });
           setOption(tmpOption);
@@ -154,6 +155,7 @@ function MenuOption() {
         setTextProcessing(false);
       }
     }
+    // eslint-disable-next-line
   }, [text]);
 
   //code 확인
@@ -181,6 +183,7 @@ function MenuOption() {
         history.push("/processing");
       }
     }
+    // eslint-disable-next-line
   }, [code]);
 
   return (
