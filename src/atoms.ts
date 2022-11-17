@@ -46,7 +46,7 @@ export const textProcessing = atom<boolean>({
 export const progressBarLevel = atom<{
   value: number;
   passConflict: boolean;
-  stage: "main" | "conflict" | "option" | "set" | "confirm";
+  stage: "main" | "conflict" | "option" | "set" | "confirm" | "menu";
   progress: string;
 }>({
   key: "progressBarLevel",
