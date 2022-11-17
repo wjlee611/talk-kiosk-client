@@ -1,4 +1,6 @@
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { progressBarLevel } from "../atoms";
 
 const Wrapper = styled.div<{ imgUrl: string }>`
   width: 300px;
@@ -41,9 +43,13 @@ interface IMenuCard {
 }
 function MenuCard({ name, index, id }: IMenuCard) {
   const imgUrl = process.env.PUBLIC_URL + `/images/menus/${id}.png`;
+  const progress = useRecoilValue(progressBarLevel);
+
   return (
     <Wrapper imgUrl={imgUrl}>
-      <Index>{index === 0 ? "+" : index}</Index>
+      <Index>
+        {progress.stage === "menu" ? "" : index === 0 ? "+" : index}
+      </Index>
       <Name>{name}</Name>
     </Wrapper>
   );

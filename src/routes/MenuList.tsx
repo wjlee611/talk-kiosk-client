@@ -6,6 +6,7 @@ import { idToName, makeMenu } from "../utils";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   orderedMenu,
+  processing,
   procIdx,
   progressBarLevel,
   resultCode,
@@ -14,7 +15,7 @@ import {
 } from "../atoms";
 import { useHistory } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { postConflictSolve } from "../api";
+import { IOrdered, postConflictSolve, postOrderList } from "../api";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -70,6 +71,7 @@ const GridWrapper = styled.div`
 function MenuList() {
   const [ordered, setOrdered] = useRecoilState(orderedMenu);
   const processIdx = useRecoilValue(procIdx);
+  const setIsProcessing = useSetRecoilState(processing);
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const setTextProcessing = useSetRecoilState(textProcessing);
@@ -79,27 +81,36 @@ function MenuList() {
 
   //progressBar 계산
   useEffect(() => {
-    if (200 < ordered.menu[processIdx]?.id[0]) {
+    if (ordered.menu[processIdx]?.id.length > 10) {
       setProgress({
-        value: 0.5,
-        passConflict: true,
-        stage: "conflict",
-        progress: "1/2",
-      });
-    } else if (ordered.menu[processIdx].set.length) {
-      setProgress({
-        value: 0.25,
-        passConflict: true,
-        stage: "conflict",
-        progress: "1/4",
+        value: 0,
+        passConflict: false,
+        stage: "menu",
+        progress: "메뉴를 찾아보시고 주문해주세요!",
       });
     } else {
-      setProgress({
-        value: 0.33,
-        passConflict: true,
-        stage: "conflict",
-        progress: "1/3",
-      });
+      if (200 < ordered.menu[processIdx]?.id[0]) {
+        setProgress({
+          value: 0.5,
+          passConflict: true,
+          stage: "conflict",
+          progress: "1/2",
+        });
+      } else if (ordered.menu[processIdx].set.length) {
+        setProgress({
+          value: 0.25,
+          passConflict: true,
+          stage: "conflict",
+          progress: "1/4",
+        });
+      } else {
+        setProgress({
+          value: 0.33,
+          passConflict: true,
+          stage: "conflict",
+          progress: "1/3",
+        });
+      }
     }
     //category 표시여부 계산
     ordered.menu[processIdx].id.forEach((i) => {
@@ -114,28 +125,66 @@ function MenuList() {
   useEffect(() => {
     if (text) {
       setTextProcessing(true);
-      if (code === 1003 || code === 1002 || code === 2009) {
-        //code 1003: 충돌메뉴 선택 (local)
-        postConflictSolve(text, ordered.menu[processIdx].id).then((res) => {
-          setTextProcessing(false);
-          if (res.code === 2002) {
-            //code 2002: 충돌해결
-            const newMenu = makeMenu(ordered.menu, processIdx, "ID", [
-              res.resolve,
-            ]);
+      if (code === 1003 || code === 1002 || code === 2009 || code === 1001) {
+        if (ordered.menu[processIdx].id.length > 10) {
+          postOrderList(text).then((res) => {
+            setCode(res.code);
+            setTextProcessing(false);
+            let tmpOrderedMenu: IOrdered["menu"] = [...ordered.menu];
+            res.order_list.forEach((i, idx) => {
+              if (idx === 0) {
+                tmpOrderedMenu[processIdx] = {
+                  id: i.menu,
+                  option: i.option,
+                  set: i.set,
+                  qty: i.qty,
+                };
+              } else {
+                tmpOrderedMenu.push({
+                  id: i.menu,
+                  option: i.option,
+                  set: i.set,
+                  qty: i.qty,
+                });
+              }
+            });
             setOrdered((prev) => ({
               order: prev.order,
               price: prev.price,
               takeout: prev.takeout,
-              menu: newMenu,
+              menu: [...tmpOrderedMenu],
             }));
-            setCode(2003);
-            setText("");
-            history.push("/processing/option");
-          } else {
-            setCode(res.code);
-          }
-        });
+
+            if (res.code === 1001) {
+              //code 1001: 성공
+              setText("");
+              setIsProcessing(false);
+              history.push("/processing");
+            }
+          });
+        } else {
+          //code 1003: 충돌메뉴 선택 (local)
+          postConflictSolve(text, ordered.menu[processIdx].id).then((res) => {
+            setTextProcessing(false);
+            if (res.code === 2002) {
+              //code 2002: 충돌해결
+              const newMenu = makeMenu(ordered.menu, processIdx, "ID", [
+                res.resolve,
+              ]);
+              setOrdered((prev) => ({
+                order: prev.order,
+                price: prev.price,
+                takeout: prev.takeout,
+                menu: newMenu,
+              }));
+              setCode(2003);
+              setText("");
+              history.push("/processing/option");
+            } else {
+              setCode(res.code);
+            }
+          });
+        }
       } else {
         setTextProcessing(false);
       }

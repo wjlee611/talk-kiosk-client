@@ -51,6 +51,8 @@ function Processing() {
 
   //code 확인
   useEffect(() => {
+    console.log(code);
+    console.log(ordered);
     if (code !== 1002 && isProcessing !== "DONE") {
       if (code === 1003) {
         history.push("/processing/list");

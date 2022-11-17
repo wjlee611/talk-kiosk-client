@@ -23,7 +23,7 @@ const Progress = styled(motion.div)`
   transform-origin: 0%;
   z-index: 1;
 `;
-const ProgressTextWrapper = styled.div`
+const ProgressTextWrapper = styled.div<{ isMenu: boolean }>`
   width: 100%;
   height: 50px;
   display: flex;
@@ -46,7 +46,7 @@ const ProgressTextWrapper = styled.div`
     transform: translateX(60px);
   }
   & > span:nth-child(2) {
-    width: 50px;
+    width: ${(props) => (props.isMenu ? "400px" : "50px")};
     color: #1cd6ce;
     padding-left: 10px;
   }
@@ -94,7 +94,7 @@ function ProgressBar() {
   return (
     <Wrapper>
       <Progress style={{ scaleX }} />
-      <ProgressTextWrapper>
+      <ProgressTextWrapper isMenu={progress.stage === "menu"}>
         <span>
           {progress.stage === "conflict"
             ? "메뉴 선택"
@@ -102,7 +102,9 @@ function ProgressBar() {
             ? "옵션 선택"
             : progress.stage === "set"
             ? "세트 메뉴 선택"
-            : "주문 확인"}
+            : progress.stage === "confirm"
+            ? "주문 확인"
+            : ""}
         </span>
         <span>{progress.progress}</span>
         <motion.div style={{ width: scaleX_Text }} />
