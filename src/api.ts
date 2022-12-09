@@ -162,7 +162,7 @@ export async function postOrderList(text: string): Promise<IPostOrderList> {
     const postJson: any = { text: text };
 
     const data = await axios.post<IPostOrderList>(
-      "http://127.0.0.1:8000/order",
+      "http://127.0.0.1:8000/order", //43.200.104.116
       JSON.stringify(postJson),
       {
         headers: header,
