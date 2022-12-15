@@ -1,10 +1,13 @@
 {
   "files": {
-    "main.js": "/talk-kiosk-client/static/js/main.2d33874f.js",
+    "main.css": "/talk-kiosk-client/static/css/main.64aa2a0a.css",
+    "main.js": "/talk-kiosk-client/static/js/main.78380b30.js",
     "index.html": "/talk-kiosk-client/index.html",
-    "main.2d33874f.js.map": "/talk-kiosk-client/static/js/main.2d33874f.js.map"
+    "main.64aa2a0a.css.map": "/talk-kiosk-client/static/css/main.64aa2a0a.css.map",
+    "main.78380b30.js.map": "/talk-kiosk-client/static/js/main.78380b30.js.map"
   },
   "entrypoints": [
-    "static/js/main.2d33874f.js"
+    "static/css/main.64aa2a0a.css",
+    "static/js/main.78380b30.js"
   ]
 }
