@@ -186,10 +186,7 @@ function Stt() {
   };
 
   return (
-    <Wrapper
-      // onClick={onClick}
-      on={listening ? "true" : "false"}
-    >
+    <Wrapper onClick={onClick} on={listening ? "true" : "false"}>
       <HintBox>
         {isTextProcessing
           ? "처리 중 입니다..."
@@ -199,9 +196,9 @@ function Stt() {
             : "( 듣고있어요! )"
           : "여기를 터치(클릭)하신 후 말씀해주세요!"}
       </HintBox>
-      <form onSubmit={onSubmit}>
+      {/* <form onSubmit={onSubmit}>
         <input type="text" style={{ width: "300px" }}></input>
-      </form>
+      </form> */}
       <KeywordWrapper key={stage} listening={listening ? "true" : "false"}>
         <KB1>
           {stage === "main"
