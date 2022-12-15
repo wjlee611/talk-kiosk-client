@@ -1,11 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { postTakeout } from "../api";
 import { orderedMenu, resultCode, stText, textProcessing } from "../atoms";
 import Stt from "../components/Stt";
-import kioskStart from "../audio/kiosk_start.mp3";
+// import kioskStart from "../audio/kiosk_start.mp3";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -17,24 +17,28 @@ const Wrapper = styled.div`
   align-items: center;
   position: relative;
 `;
-const AskText = styled.span`
+const AskText = styled.span<{ isNear: boolean }>`
   width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #00000090;
+  background-color: #000000e0;
   position: absolute;
   top: 0;
   color: white;
   font-size: 20px;
   font-weight: 700;
 
-  animation: textani 1s cubic-bezier(0.55, 0.1, 0.15, 1) forwards;
+  animation: ${(props) =>
+    props.isNear
+      ? "textani 1s cubic-bezier(0.55, 0.1, 0.15, 1) forwards"
+      : null};
+  animation-delay: 1s;
   @keyframes textani {
     50% {
       height: 100vh;
-      background-color: #00000090;
+      background-color: #000000e0;
     }
     100% {
       height: 50px;
@@ -48,6 +52,7 @@ function KioskHome() {
   const [text, setText] = useRecoilState(stText);
   const [code, setCode] = useRecoilState(resultCode);
   const setTextProcessing = useSetRecoilState(textProcessing);
+  const [isNear, setIsNear] = useState(false);
   const history = useHistory();
 
   // const audio = new Audio(kioskStart);
@@ -85,7 +90,9 @@ function KioskHome() {
   return (
     <Wrapper>
       <Stt />
-      <AskText>매장에서 드시고 가시나요?</AskText>
+      <AskText isNear={isNear} onClick={() => setIsNear(true)}>
+        {isNear ? "매장에서 드시고 가시나요?" : "가까이 와주세요"}
+      </AskText>
     </Wrapper>
   );
 }
